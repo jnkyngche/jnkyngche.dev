@@ -1,53 +1,62 @@
-import { notFound } from "next/navigation"
-import { allPosts } from "contentlayer/generated"
+import { notFound } from "next/navigation";
+import { allPosts } from "contentlayer/generated";
 
-import { Metadata } from "next"
-import { Mdx } from "@/components/mdx-components"
+import { Metadata } from "next";
+import { Mdx } from "@/components/mdx-components";
 
 interface PostProps {
   params: {
-    slug: string[]
-  }
+    slug: string[];
+  };
 }
 
 async function getPostFromParams(params: PostProps["params"]) {
-  const slug = params?.slug?.join("/")
-  const post = allPosts.find((post) => post.slugAsParams === slug)
+  const slug = params?.slug?.join("/");
+  const decodedSlug = decodeURIComponent(slug);
+  const post = allPosts.find((post) => post.slugAsParams === decodedSlug);
 
   if (!post) {
-    null
+    null;
   }
 
-  return post
+  return post;
 }
 
 export async function generateMetadata({
   params,
 }: PostProps): Promise<Metadata> {
-  const post = await getPostFromParams(params)
+  const post = await getPostFromParams(params);
 
   if (!post) {
-    return {}
+    return {};
   }
 
   return {
     title: post.title,
     description: post.description,
-  }
+  };
 }
 
 export async function generateStaticParams(): Promise<PostProps["params"][]> {
   return allPosts.map((post) => ({
     slug: post.slugAsParams.split("/"),
-  }))
+  }));
 }
 
 export default async function PostPage({ params }: PostProps) {
-  const post = await getPostFromParams(params)
+  const post = await getPostFromParams(params);
 
   if (!post) {
-    notFound()
+    notFound();
   }
+
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   return (
     <article className="py-6 prose dark:prose-invert">
@@ -57,8 +66,11 @@ export default async function PostPage({ params }: PostProps) {
           {post.description}
         </p>
       )}
+      <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 mb-4 text-right">
+        {formatDate(post.date)}
+      </p>
       <hr className="my-4" />
       <Mdx code={post.body.code} />
     </article>
-  )
+  );
 }
