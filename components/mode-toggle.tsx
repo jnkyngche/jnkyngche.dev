@@ -1,15 +1,16 @@
-"use client"
+"use client";
 
-import { useTheme } from "next-themes"
+import { useTheme } from "next-themes";
 
 export function ModeToggle() {
-  const { setTheme, theme } = useTheme()
+  const { setTheme, theme } = useTheme();
 
   return (
     <button
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      className="border rounded-md w-6 h-6 flex items-center justify-center">
-      <span className="sr-only">Toggle mode</span>
+      className="p-3 bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-800 rounded-full shadow-lg hover:bg-slate-700 dark:hover:bg-slate-300 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-slate-400 dark:focus:ring-slate-600"
+      aria-label="테마 변경"
+    >
       {theme !== "dark" ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -17,7 +18,8 @@ export function ModeToggle() {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-4 h-4">
+          className="w-5 h-5"
+        >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -31,7 +33,8 @@ export function ModeToggle() {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-4 h-4">
+          className="w-5 h-5"
+        >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -40,5 +43,5 @@ export function ModeToggle() {
         </svg>
       )}
     </button>
-  )
+  );
 }

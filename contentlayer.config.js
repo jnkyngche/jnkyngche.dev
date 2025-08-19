@@ -47,7 +47,33 @@ export const Post = defineDocumentType(() => ({
       required: true,
     },
   },
-  computedFields,
+  computedFields: {
+    ...computedFields,
+    tableOfContents: {
+      type: "json",
+      resolve: (doc) => {
+        const headings = [];
+        const lines = doc.body.raw.split("\n");
+
+        lines.forEach((line, index) => {
+          const trimmedLine = line.trim();
+
+          // ## 또는 ###로 시작하는 제목 찾기
+          if (trimmedLine.startsWith("##") && !trimmedLine.startsWith("###")) {
+            const text = trimmedLine.replace(/^##\s*/, "");
+            const id = text.toLowerCase().replace(/[^a-z0-9가-힣]+/g, "-");
+            headings.push({ id, text, level: 2 });
+          } else if (trimmedLine.startsWith("###")) {
+            const text = trimmedLine.replace(/^###\s*/, "");
+            const id = text.toLowerCase().replace(/[^a-z0-9가-힣]+/g, "-");
+            headings.push({ id, text, level: 3 });
+          }
+        });
+
+        return headings;
+      },
+    },
+  },
 }));
 
 export default makeSource({
