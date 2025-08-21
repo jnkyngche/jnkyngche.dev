@@ -202,3 +202,42 @@
     @apply text-red-300;
   }
 }
+
+/* Line clamp 유틸리티 클래스들 */
+@layer utilities {
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+}
+
+/* 애니메이션 유틸리티 클래스들 */
+@layer utilities {
+  .animate-in {
+    animation-fill-mode: both;
+  }
+
+  .slide-in-from-top-4 {
+    animation: slide-in-from-top-4 0.3s ease-out;
+  }
+
+  .duration-300 {
+    animation-duration: 300ms;
+  }
+}
