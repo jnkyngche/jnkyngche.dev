@@ -1,6 +1,26 @@
+"use client";
+
+// 클라이언트에서 process 객체 polyfill (최상단에서 먼저 실행)
+if (typeof window !== "undefined") {
+  const global = globalThis as any;
+  if (!global.process) {
+    const nodeEnv = (typeof process !== "undefined" && process.env?.NODE_ENV) || "development";
+    global.process = {
+      env: {
+        NODE_ENV: nodeEnv,
+      },
+      browser: true,
+      version: "",
+    };
+  }
+  // window.process도 설정
+  if (!(window as any).process) {
+    (window as any).process = global.process;
+  }
+}
+
 import Image from "next/image";
 import { useMDXComponent } from "next-contentlayer/hooks";
-import { useEffect } from "react";
 
 // 코드 블록을 위한 커스텀 컴포넌트
 const CodeBlock = ({ children, className, ...props }: any) => {

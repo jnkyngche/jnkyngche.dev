@@ -351,7 +351,7 @@ export function Search() {
                 <input
                   ref={inputRef}
                   type="text"
-                  placeholder="검색어를 입력하세요... (한글 초성 지원)"
+                  placeholder="검색어를 입력하세요..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 bg-transparent border-none outline-none text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400"
