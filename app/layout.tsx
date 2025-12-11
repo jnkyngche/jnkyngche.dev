@@ -4,10 +4,12 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@/components/analytics";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Search } from "@/components/search";
+import { GithubLink } from "@/components/github-link";
+import { MailLink } from "@/components/mail-link";
 
 export const metadata = {
-  title: "jnkyngche`s blog",
-  description: "개인 블로그",
+  title: "jnkyngche (zeroth) | 블로그",
+  description: "개발 블로그",
 };
 
 interface RootLayoutProps {
@@ -27,7 +29,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     <Link href="/">Home</Link>
                     <Link href="/about">About</Link>
                   </nav>
-                  <div className="ml-auto">
+                  <div className="ml-auto flex items-center gap-2">
+                    <MailLink />
+                    <GithubLink />
                     <Search />
                   </div>
                 </div>
