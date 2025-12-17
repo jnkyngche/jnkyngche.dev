@@ -9,7 +9,7 @@ import { MailLink } from "@/components/mail-link";
 
 export const metadata = {
   title: "jnkyngche (zeroth) | 블로그",
-  description: "개발 블로그",
+  description: "주로 웹 개발에 대하여 이야기합니다.",
 };
 
 interface RootLayoutProps {
