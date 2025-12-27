@@ -4,7 +4,9 @@
 if (typeof window !== "undefined") {
   const global = globalThis as any;
   if (!global.process) {
-    const nodeEnv = (typeof process !== "undefined" && process.env?.NODE_ENV) || "development";
+    const nodeEnv =
+      (typeof process !== "undefined" && process.env?.NODE_ENV) ||
+      "development";
     global.process = {
       env: {
         NODE_ENV: nodeEnv,
@@ -19,8 +21,39 @@ if (typeof window !== "undefined") {
   }
 }
 
+import { useState } from "react";
 import Image from "next/image";
 import { useMDXComponent } from "next-contentlayer/hooks";
+import { ClickableImage } from "./clickable-image";
+import { ImageModal } from "./image-modal";
+
+// img 태그용 래퍼 (일반 HTML img를 클릭 가능하게)
+const ClickableImg = (props: React.ImgHTMLAttributes<HTMLImageElement>) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  if (!props.src) {
+    return <img {...props} />;
+  }
+
+  return (
+    <>
+      <img
+        {...props}
+        onClick={() => setIsModalOpen(true)}
+        style={{ ...props.style, cursor: "pointer" }}
+        className={`${
+          props.className || ""
+        } hover:opacity-90 transition-opacity`}
+      />
+      <ImageModal
+        src={props.src}
+        alt={props.alt || ""}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </>
+  );
+};
 
 // 코드 블록을 위한 커스텀 컴포넌트
 const CodeBlock = ({ children, className, ...props }: any) => {
@@ -68,7 +101,8 @@ const Heading3 = ({ children, ...props }: any) => {
 };
 
 const components = {
-  Image,
+  Image: ClickableImage,
+  img: ClickableImg,
   pre: CodeBlock,
   code: InlineCode,
   h2: Heading2,
