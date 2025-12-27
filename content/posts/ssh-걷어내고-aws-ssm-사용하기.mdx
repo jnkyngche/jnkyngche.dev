@@ -1,0 +1,101 @@
+---
+title: "[AWS] GitHub Actions 배포: SSH, PEM없이 AWS SSM으로 배포 방법 개선하기"
+date: "2025-9-25"
+description: "GitHub Actions에서 ssh 사용하던 방식에서 AWS SSM을 통해 IAM 권한만으로 안전한 배포로 개선한 방법을 설명합니다"
+---
+
+현재 사용하고 있는 배포 시스템 중, GitHub Actions Runner가 EC2에 SSH로 접속해서 Docker를 실행하는 단계가 있었습니다. 기존에는 `appleboy/ssh-action`을 사용하기 위해 GitHub Secrets에 **PEM(Private Key)** 를 직접 넣어두고 사용했습니다.
+
+하지만 만약 내 GitHub 계정이 탈취되면? 이 서버의 개인키도 같이 털리게 됩니다. 물론 흔한 일은 아니겠지만, 근본적으로 **외부 웹 서비스에 PEM 키 원본을 올려놓는다는 것 자체가 찜찜한 불안요소**였습니다.
+
+그러다 **AWS Systems Manager (SSM)** 라는 서비스를 알게 되었습니다. 이걸 사용하면 SSH없이 **IAM 권한만으로 EC2에 접속하고 명령을 내릴 수 있습니다.** 즉 직접 ssh으로 접속 해 명령어하는 방식이 아니라 주체를 AWS SSM으로 돌릴 수 있습니다.
+
+---
+
+## 1단계: EC2에게 "SSM 권한" 주기 (IAM 역할 생성)
+
+우선 EC2가 SSM 서비스와 통신할 수 있도록 권한(Role)을 부여해야 합니다.
+
+1.  AWS 콘솔에서 **IAM** 검색 후 접속합니다.
+2.  왼쪽 메뉴 **[역할 (Roles)]** -> **[역할 만들기 (Create role)]** 클릭.
+3.  **신뢰할 수 있는 엔터티 유형**: `AWS 서비스` 선택.
+4.  **사용 사례**: `EC2` 선택 후 [다음] 클릭.
+5.  **권한 정책 추가** 검색창에 다음을 입력합니다.
+    - 검색어: `AmazonSSMManagedInstanceCore`
+6.  나오는 항목 체크박스(☑️) 선택 후 [다음].
+7.  이름 지정: `EC2-SSM-Role` (혹은 원하는 이름) 입력 후 **[역할 생성]** 완료.
+
+> **Note:** 저는 이미 기존에 ECR 접근 등을 위해 만들어둔 역할이 있어서, 새로 만들지 않고 해당 역할에 위 정책(`AmazonSSMManagedInstanceCore`)만 추가했습니다.
+
+## 2단계: GitHub Actions에 등록한 사용자에게 권한 주기
+
+이제 GitHub Actions가 사용하는 IAM 사용자에게도 "SSM에 명령을 내릴 수 있는 권한"을 줘야 합니다.
+`aws-actions/configure-aws-credentials` 여기서 사용한 사용자를 말하는겁니다.
+
+1.  IAM의 **사용자(Users)** 메뉴로 이동합니다.
+2.  GitHub Secrets(`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`)에 등록해서 사용 중인 그 **사용자(User)**를 클릭합니다.
+3.  **권한 탭** > **[권한 추가]** > **[정책 연결(Attach policies)]** 클릭.
+4.  `AmazonSSMFullAccess`를 검색해서 체크하고 연결합니다.
+
+## 3단계: EC2에 역할 입혀주기
+
+1.  **EC2 콘솔**로 이동 -> 내 인스턴스 체크.
+2.  우측 상단 **[작업 (Actions)]** -> **[보안 (Security)]** -> **[IAM 역할 수정 (Modify IAM role)]**.
+3.  방금 만든 `EC2-SSM-Role`을 선택하고 **[IAM 역할 업데이트]** 클릭.
+
+---
+
+## 4단계: GitHub Actions 워크플로우 수정 (Before & After)
+
+이제 `deploy.yml` 파일에서 SSH 관련 부분을 걷어내고 SSM 명령어로 교체합니다.
+
+### Before: SSH 사용 (appleboy/ssh-action)
+
+기존에는 호스트, 유저명, 키 파일까지 모두 Secrets로 관리해야 했습니다.
+
+```yaml
+- name: Deploy to EC2
+  uses: appleboy/ssh-action@v1.0.0
+  env:
+    ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+    IMAGE_TAG: ${{ env.IMAGE_TAG }}
+    AWS_REGION: ${{ secrets.AWS_REGION }}
+  with:
+    host: ${{ secrets.EC2_HOST }} # 퍼블릭 주소
+    username: ${{ secrets.EC2_USER }} # 우분투
+    key: ${{ secrets.EC2_SSH_KEY }} # pem
+    port: 22
+    script: |
+      # 도커 실행 스크립트...
+```
+
+### After: AWS SSM 사용 (aws ssm send-command)
+
+이제 AWS CLI를 통해 SSM으로 명령을 보냅니다. `AWS-RunShellScript` 문서를 사용하면 쉘 스크립트를 그대로 실행할 수 있습니다.
+
+```yaml
+- name: Deploy to EC2 via SSM
+  env:
+    ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+    AWS_REGION: ${{ secrets.AWS_REGION }}
+    IMAGE_TAG: ${{ env.IMAGE_TAG }}
+  run: |
+    # 실행할 스크립트 내용을 변수 혹은 한 줄로 정리
+    aws ssm send-command \
+      --document-name "AWS-RunShellScript" \
+      --targets "Key=instanceids,Values=${{ secrets.EC2_INSTANCE_ID }}" \
+      --comment "Deploy Next.js App ($IMAGE_TAG)" \
+      --parameters commands='[
+         # 도커 실행 스크립트..."
+      ]'
+```
+
+_(※ `commands` 부분에는 실제 서버에서 실행하던 도커 배포 스크립트를 리스트 형태로 넣어주면 됩니다.)_
+
+---
+
+## 마무리
+
+이제 GitHub Secrets에는 **`EC2_INSTANCE_ID`** 하나만 등록하면 됩니다. 기존에 SSH 접속을 위해 관리하던 `EC2_HOST`, `EC2_USER`, 그리고 가장 찜찜했던 `EC2_SSH_KEY`는 모두 삭제했습니다.
