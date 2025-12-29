@@ -6,6 +6,7 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { Search } from "@/components/search";
 import { GithubLink } from "@/components/github-link";
 import { MailLink } from "@/components/mail-link";
+import { PlaygroundLink } from "@/components/playground-link";
 
 export const metadata = {
   title: "jnkyngche (zeroth) | 블로그",
@@ -21,7 +22,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="ko">
       <body className="antialiased min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 font-pretendard">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="max-w-2xl mx-auto py-10 px-4">
+          <div className="max-w-2xl mx-auto pt-10 pb-32 px-4">
             <header>
               <div className="flex items-center justify-between">
                 <div className="flex items-center w-full">
@@ -29,15 +30,17 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     <Link href="/">Home</Link>
                     <Link href="/about">About</Link>
                   </nav>
-                  <div className="ml-auto flex items-center gap-2">
+                  <div className="ml-auto flex items-center gap-1">
                     <MailLink />
                     <GithubLink />
+                    <PlaygroundLink />
+                    <div className="w-px h-4 bg-slate-300 dark:bg-slate-600 mx-1"></div>
                     <Search />
                   </div>
                 </div>
               </div>
             </header>
-            <main>{children}</main>
+            <main className="mb-16">{children}</main>
           </div>
 
           {/* 다크모드 버튼을 우측 상단에 고정 */}

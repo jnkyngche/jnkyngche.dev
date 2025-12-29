@@ -8,7 +8,7 @@ export default function ScrollToTop() {
   // 스크롤 위치를 감지하여 버튼 표시 여부 결정
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.pageYOffset > 2000) {
+      if (window.pageYOffset > 400) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
