@@ -7,6 +7,7 @@ import { Search } from "@/components/search";
 import { GithubLink } from "@/components/github-link";
 import { MailLink } from "@/components/mail-link";
 import { PlaygroundLink } from "@/components/playground-link";
+import { Footer } from "@/components/footer";
 
 export const metadata = {
   title: "jnkyngche (zeroth) | 블로그",
@@ -22,7 +23,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="ko">
       <body className="antialiased min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 font-pretendard">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="max-w-2xl mx-auto pt-10 pb-32 px-4">
+          <div className="max-w-2xl mx-auto pt-10 pb-16 px-4 min-h-screen flex flex-col">
             <header>
               <div className="flex items-center justify-between">
                 <div className="flex items-center w-full">
@@ -40,7 +41,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 </div>
               </div>
             </header>
-            <main className="mb-16">{children}</main>
+            <main className="flex-1">{children}</main>
+
+            <Footer />
           </div>
 
           {/* 다크모드 버튼을 우측 상단에 고정 */}
