@@ -5,9 +5,9 @@ import { usePathname } from "next/navigation";
 export function Footer() {
   const pathname = usePathname();
 
-  // 포스트 페이지(/posts/...)와 about 페이지에서는 RSS 링크 숨기기
+  // 포스트 페이지(/posts/...), about 페이지, resume 페이지에서는 RSS 링크 숨기기
   const shouldShowRss =
-    !pathname?.startsWith("/posts/") && pathname !== "/about";
+    !pathname?.startsWith("/posts/") && pathname !== "/about" && pathname !== "/resume";
 
   return (
     <footer className="mt-auto pt-8 pb-4">
