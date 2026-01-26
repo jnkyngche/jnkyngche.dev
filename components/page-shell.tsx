@@ -11,6 +11,16 @@ interface PageShellProps {
 export function PageShell({ children }: PageShellProps) {
   const pathname = usePathname();
   const isResumePage = pathname === "/resume";
+  const isExperiencePage = pathname?.startsWith("/experience/");
+
+  // 경력기술서 상세 페이지: 독립 레이아웃 (캡처 친화적)
+  if (isExperiencePage) {
+    return (
+      <div className="min-h-screen">
+        <main>{children}</main>
+      </div>
+    );
+  }
 
   return (
     <div
