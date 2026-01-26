@@ -13,11 +13,28 @@ interface PostProps {
 
 async function getPostFromParams(params: PostProps["params"]) {
   const slug = params?.slug?.join("/");
-  const decodedSlug = decodeURIComponent(slug);
-  const post = allPosts.find((post) => post.slugAsParams === decodedSlug);
+  if (!slug) {
+    return undefined;
+  }
 
+  // URL이 이미 디코딩되어 있을 수 있으므로, 디코딩 시도
+  let decodedSlug: string;
+  try {
+    decodedSlug = decodeURIComponent(slug);
+  } catch {
+    decodedSlug = slug;
+  }
+
+  // 정확한 매칭 시도
+  let post = allPosts.find((post) => post.slugAsParams === decodedSlug);
+  
+  // 매칭 실패 시 인코딩된 버전도 시도
   if (!post) {
-    null;
+    const encodedSlug = encodeURIComponent(decodedSlug);
+    post = allPosts.find((post) => {
+      const encodedPostSlug = encodeURIComponent(post.slugAsParams);
+      return encodedPostSlug === encodedSlug || post.slugAsParams === decodedSlug;
+    });
   }
 
   return post;
@@ -38,7 +55,7 @@ export async function generateMetadata({
   };
 }
 
-export async function generateStaticParams(): Promise<PostProps["params"][]> {
+export async function generateStaticParams(): Promise<Array<{ slug: string[] }>> {
   return allPosts.map((post) => ({
     slug: post.slugAsParams.split("/"),
   }));
@@ -74,7 +91,7 @@ export default async function PostPage({ params }: PostProps) {
         </p>
         <hr className="my-4" />
 
-        {/* 메인 콘텐츠와 목차 */}
+        {/* 메인 콘텐츠 */}
         <Mdx code={post.body.code} />
       </article>
 

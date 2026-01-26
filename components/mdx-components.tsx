@@ -1,27 +1,6 @@
 "use client";
 
-// 클라이언트에서 process 객체 polyfill (최상단에서 먼저 실행)
-if (typeof window !== "undefined") {
-  const global = globalThis as any;
-  if (!global.process) {
-    const nodeEnv =
-      (typeof process !== "undefined" && process.env?.NODE_ENV) ||
-      "development";
-    global.process = {
-      env: {
-        NODE_ENV: nodeEnv,
-      },
-      browser: true,
-      version: "",
-    };
-  }
-  // window.process도 설정
-  if (!(window as any).process) {
-    (window as any).process = global.process;
-  }
-}
-
-import { useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useMDXComponent } from "next-contentlayer/hooks";
 import { ClickableImage } from "./clickable-image";
@@ -31,7 +10,7 @@ import { ImageModal } from "./image-modal";
 const ClickableImg = (props: React.ImgHTMLAttributes<HTMLImageElement>) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  if (!props.src) {
+  if (!props.src || typeof props.src !== "string") {
     return <img {...props} />;
   }
 
@@ -78,7 +57,7 @@ const InlineCode = ({ children, ...props }: any) => {
 };
 
 // 제목 컴포넌트들
-const Heading2 = ({ children, ...props }: any) => {
+const Heading2 = ({ children, ...props }: React.ComponentProps<"h2">) => {
   const text = children?.toString() || "";
   const id = text.toLowerCase().replace(/[^a-z0-9가-힣]+/g, "-");
 
@@ -89,7 +68,7 @@ const Heading2 = ({ children, ...props }: any) => {
   );
 };
 
-const Heading3 = ({ children, ...props }: any) => {
+const Heading3 = ({ children, ...props }: React.ComponentProps<"h3">) => {
   const text = children?.toString() || "";
   const id = text.toLowerCase().replace(/[^a-z0-9가-힣]+/g, "-");
 

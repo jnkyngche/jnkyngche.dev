@@ -15,7 +15,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning>
       <body className="antialiased min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 font-pretendard">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <PageShell>{children}</PageShell>

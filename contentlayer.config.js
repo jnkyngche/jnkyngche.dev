@@ -100,6 +100,15 @@ export default makeSource({
       rehypeHighlight,
       [rehypePrismPlus, { ignoreMissing: true }],
     ],
+    // esbuild 옵션 - 프로덕션 JSX 런타임 사용
+    esbuildOptions: (options) => {
+      options.jsx = "automatic";
+      options.jsxImportSource = "react";
+      options.jsxDev = false;  // 개발 모드 JSX 비활성화
+      options.minify = false;
+      options.target = "es2020";
+      return options;
+    },
   },
   // 빌드 성공/실패 콜백 수정
   onSuccess: async (importData) => {
