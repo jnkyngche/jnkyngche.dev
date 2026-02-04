@@ -32,7 +32,7 @@ export default function ResumePage() {
           <div className="justify-self-end">
             <div className="w-20 h-20 sm:w-32 sm:h-40 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 relative">
               <Image
-                src="/profile.jpg"
+                src="/profile-new.jpeg"
                 alt="최준경 프로필 사진"
                 width={128}
                 height={160}
