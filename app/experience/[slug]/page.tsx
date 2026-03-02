@@ -142,14 +142,18 @@ export default function ExperienceDetailPage({ params }: ExperiencePageProps) {
 
           {/* Row 3: Context (Background + Problem) */}
           <DocumentRow label="배경 및 문제">
-            <p className="text-base text-slate-700 dark:text-slate-300 leading-7">
-              {project.context}
-            </p>
+            <div className="space-y-3">
+              {project.context.split("\n\n").map((paragraph, i) => (
+                <p key={i} className="text-base text-slate-700 dark:text-slate-300 leading-7">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
           </DocumentRow>
 
           {/* Row 4: Process (The Deep Dive) */}
           <DocumentRow label="해결 과정">
-            <ul className="space-y-5">
+            <ul className="space-y-6">
               {project.process.map((step, index) => (
                 <li key={index}>
                   <p className="text-base font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
@@ -158,6 +162,19 @@ export default function ExperienceDetailPage({ params }: ExperiencePageProps) {
                   <p className="text-base text-slate-600 dark:text-slate-400 leading-7">
                     {step.desc}
                   </p>
+                  {step.items && (
+                    <ul className="mt-3 space-y-2">
+                      {step.items.map((item, i) => (
+                        <li key={i} className="flex items-start gap-2.5 text-slate-600 dark:text-slate-400">
+                          <span className="mt-[0.6rem] h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-slate-600 flex-shrink-0" />
+                          <span className="text-base leading-7">
+                            <strong className="font-semibold text-slate-700 dark:text-slate-300">{item.title}:</strong>{" "}
+                            {item.desc}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))}
             </ul>
@@ -165,9 +182,14 @@ export default function ExperienceDetailPage({ params }: ExperiencePageProps) {
 
           {/* Row 5: Result */}
           <DocumentRow label="성과" isLast>
-            <p className="text-base text-slate-700 dark:text-slate-300 leading-7">
-              {project.result}
-            </p>
+            <ul className="space-y-2">
+              {project.result.map((item, i) => (
+                <li key={i} className="flex items-start gap-2.5 text-slate-700 dark:text-slate-300">
+                  <span className="mt-[0.6rem] h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-slate-500 flex-shrink-0" />
+                  <span className="text-base leading-7">{item}</span>
+                </li>
+              ))}
+            </ul>
           </DocumentRow>
         </div>
       </div>

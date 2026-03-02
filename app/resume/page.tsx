@@ -137,7 +137,7 @@ export default function ResumePage() {
                 </a>
               </div>
 	              <span className="text-sm text-slate-700 dark:text-slate-300 font-medium font-mono">
-	                2022.06 – 2025.09
+	                2022.06 – 2025.10
 	              </span>
 	              <p className="text-[15px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">
 	                쿠팡·네이버 구매 가구의 입고(창고)→배송→시공/설치→반품까지 전 과정을 지원하는 서비스의 운영 웹(관리자/고객/물류) 및 기사용 모바일 앱 개발을 담당했습니다.
@@ -241,17 +241,6 @@ export default function ResumePage() {
                   <li className="flex items-start gap-2.5">
                     <span className="mt-[0.6rem] h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-slate-500 flex-shrink-0" />
                     <span>Next.js 기반 유지보수 및 개선</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className="mt-[0.6rem] h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-slate-500 flex-shrink-0" />
-                    <span className="flex items-center gap-1.5">
-                      {`지도 마커 호출 방식을 타일맵 기반으로 변경(매번 모든 마커를 호출 -> 현재 보고 있는 타일만 호출)하여 약 API 요청 비용 3배 절감함.`}
-                      <Link href="/experience/nahouse" className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors flex-shrink-0" title="경력기술서 보기">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                        </svg>
-                      </Link>
-                    </span>
                   </li>
                 </ul>
               </div>
@@ -360,80 +349,6 @@ export default function ResumePage() {
             </ul>
           </div>
 
-          <div>
-            <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] sm:items-baseline gap-x-6 gap-y-2">
-              <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="text-[17px] font-semibold text-slate-900 dark:text-slate-50">
-                  zeroth-playground.com
-                </h3>
-                <a
-                  href="https://zeroth-playground.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors inline-flex items-center gap-1.5"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-3.5 h-3.5"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
-                    />
-                  </svg>
-                </a>
-              </div>
-              <span className="text-sm text-slate-700 dark:text-slate-300 font-medium font-mono">
-                2024.12 – 현재
-              </span>
-            </div>
-
-            <p className="mt-3 text-slate-600 dark:text-slate-300 leading-7">
-              개인 실험용 Playground로 테스트하는 공간
-            </p>
-
-            <div className="mt-4 flex flex-wrap gap-2">
-              <span className="inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-800 px-3 py-1.5 text-sm text-slate-600 dark:text-slate-300">
-                Next.js
-              </span>
-              <span className="inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-800 px-3 py-1.5 text-sm text-slate-600 dark:text-slate-300">
-                TypeScript
-              </span>
-              <span className="inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-800 px-3 py-1.5 text-sm text-slate-600 dark:text-slate-300">
-                AWS (EC2, S3, CloudFront, Route53, ECR)
-              </span>
-              <span className="inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-800 px-3 py-1.5 text-sm text-slate-600 dark:text-slate-300">
-                Docker 
-              </span>
-              <span className="inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-800 px-3 py-1.5 text-sm text-slate-600 dark:text-slate-300">
-                GitHub Actions
-              </span>
-              <span className="inline-flex items-center rounded-md bg-slate-100 dark:bg-slate-800 px-3 py-1.5 text-sm text-slate-600 dark:text-slate-300">
-                Nginx 
-              </span>
-            </div>
-
-            <ul className="mt-5 space-y-2 text-slate-600 dark:text-slate-300 text-base leading-7">
-              <li className="flex items-start gap-2.5">
-                <span className="mt-[0.6rem] h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-slate-500 flex-shrink-0" />
-                <span>CloudFront를 진입점으로 설정하고, 정적 에셋(S3)과 동적 요청(EC2/Docker)을 분리하여 서버 부하를 절감하고 로딩 속도를 최적화</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="mt-[0.6rem] h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-slate-500 flex-shrink-0" />
-                <span>SSH 키 관리의 보안 취약점을 해결하기 위해 AWS Systems Manager(SSM)를 도입, IAM 권한 기반의 안전한 배포 파이프라인 구현</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="mt-[0.6rem] h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-slate-500 flex-shrink-0" />
-                <span>GitHub Actions를 활용해 [코드 푸시 → Docker 빌드 → ECR 업로드 → S3 에셋 동기화 → EC2 배포 → Slack 알림]으로 이어지는 전 과정을 자동화</span>
-              </li>
-            </ul>
-          </div>
         </div>
       </section>
 
