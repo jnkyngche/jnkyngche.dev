@@ -155,7 +155,14 @@ export default function ResumePage() {
 	              </li>
 	              <li className="flex items-start gap-2.5">
 	                <span className="mt-[0.6rem] h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-slate-500 flex-shrink-0" />
-	                <span>Next.js 기반 신규 프로젝트 개발 및 운영/유지보수</span>
+	                <span className="flex items-center gap-1.5">
+	                  Next.js 기반 어드민 상태 아키텍처 개편 및 App Router 마이그레이션
+	                  <Link href="/experience/hauser-admin" className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors" title="경력기술서 보기">
+	                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+	                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+	                    </svg>
+	                  </Link>
+	                </span>
 	              </li>
 	              <li className="flex items-start gap-2.5">
 	                <span className="mt-[0.6rem] h-1.5 w-1.5 rounded-full bg-slate-400 dark:bg-slate-500 flex-shrink-0" />
