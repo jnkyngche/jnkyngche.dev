@@ -1,0 +1,70 @@
+---
+title: "JavaScript가 싱글 스레드지만 비동기를 처리하는 원리"
+date: "2022-07-18"
+description: "콜 스택, Web API, 태스크 큐, 마이크로태스크 큐가 JavaScript 비동기의 실제 동작을 정리한다."
+category: "Development"
+tags: ["JavaScript", "Event Loop", "Async", "Browser", "Node.js"]
+---
+
+JavaScript는 싱글 스레드 언어다. 한 번에 한 가지 일만 처리할 수 있다. 그런데 네트워크 요청, 타이머, 파일 읽기 같은 작업을 어떻게 비동기로 처리하는지 이벤트 루프와 런타임 구조에 대해 정리한다.
+
+---
+
+## 1. 콜 스택
+
+JavaScript 엔진은 실행할 코드를 **콜 스택(Call Stack)** 에 쌓는다. 함수가 호출되면 스택에 추가되고, 실행이 끝나면 제거된다. LIFO(Last In, First Out) 구조다.
+
+```js
+function a() {
+  b();
+}
+function b() {
+  console.log("b");
+}
+a();
+```
+
+실행 순서는 `a() → b() → console.log()` 순으로 쌓이고, 역순으로 빠져나온다. 콜 스택이 비어있지 않으면 다른 코드는 실행될 수 없다. 이게 싱글 스레드의 의미다.
+
+---
+
+## 2. 비동기 작업
+
+`setTimeout`, `fetch`, `addEventListener` 같은 비동기 API는 JavaScript 엔진이 직접 처리하지 않는다.
+
+- **브라우저 환경:** Web API가 담당한다. 브라우저가 제공하는 별도 레이어로, 타이머 카운트다운이나 네트워크 요청은 여기서 처리된다.
+- **Node.js 환경:** `libuv`가 담당한다. C로 작성된 비동기 I/O 라이브러리로, 파일 시스템 접근이나 네트워크 처리를 멀티 스레드로 처리한다.
+
+JavaScript 엔진은 "이 작업 처리해줘"라고 위임하고, 콜 스택으로 돌아온다. 비동기 작업이 완료되면 콜백 함수를 큐에 넣는다.
+
+---
+
+## 3. 태스크 큐와 마이크로태스크 큐
+
+콜백이 대기하는 큐는 하나가 아니다. 종류에 따라 두 곳으로 나뉜다.
+
+- **태스크 큐(Macrotask Queue):** `setTimeout`, `setInterval`, I/O 콜백이 들어온다.
+- **마이크로태스크 큐(Microtask Queue):** `Promise.then`, `queueMicrotask`, `MutationObserver` 콜백이 들어온다.
+
+우선순위가 다르다. **콜 스택이 비워진 직후, 태스크 큐보다 마이크로태스크 큐가 먼저 처리된다.** 마이크로태스크 큐가 완전히 빌 때까지 태스크 큐로 넘어가지 않는다.
+
+```js
+setTimeout(() => console.log("1. setTimeout"), 0);
+
+Promise.resolve().then(() => console.log("2. Promise"));
+
+console.log("3. 동기");
+```
+
+출력 순서는 `3 → 2 → 1`이다. `setTimeout`의 딜레이가 0이어도 태스크 큐는 마이크로태스크 큐보다 뒤에 실행된다.
+
+---
+
+## 4. 이벤트 루프의 역할
+
+**이벤트 루프(Event Loop)** 는 콜 스택과 큐를 감시하는 루프다. 동작 방식은
+
+1. 콜 스택이 비어있는지 확인한다.
+2. 마이크로태스크 큐에 작업이 있으면 전부 콜 스택으로 옮겨 실행한다.
+3. 마이크로태스크 큐가 비면 태스크 큐에서 작업 하나를 꺼내 콜 스택에 올린다.
+4. 1번으로 돌아간다.

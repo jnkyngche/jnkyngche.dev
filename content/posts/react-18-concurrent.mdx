@@ -1,0 +1,65 @@
+---
+title: "React 18 Concurrent 기능이 해결하는 것"
+date: "2022-11-10"
+description: "React 18의 동시성 모드가 기존 렌더링 방식의 어떤 문제를 해결하는지 정리한다."
+category: "Development"
+tags: ["React", "React 18", "Concurrent", "useTransition", "Frontend"]
+---
+
+React 18 이전까지 렌더링은 중단할 수 없었다. 한 번 시작하면 끝날 때까지 브라우저가 다른 작업을 할 수 없어, 무거운 업데이트가 일어나면 UI가 멈추는 것처럼 느껴졌다. Concurrent 기능은 이 문제를 다룬다.
+
+---
+
+## Concurrent 렌더링이란
+
+React 18은 렌더링을 **중단하고 재개할 수 있는** 구조로 바뀌었다. 렌더링 작업에 우선순위를 붙여, 긴급한 업데이트가 들어오면 진행 중이던 렌더링을 잠시 멈추고 먼저 처리할 수 있다.
+
+사용자 입력처럼 즉각 반응해야 하는 업데이트는 **긴급(urgent)**, 검색 결과 목록 갱신처럼 조금 늦어도 되는 업데이트는 **비긴급(transition)** 으로 구분한다.
+
+---
+
+## useTransition
+
+상태 업데이트를 비긴급으로 표시하는 훅이다. `startTransition`으로 감싼 업데이트는 긴급 업데이트에 밀릴 수 있다.
+
+```js
+const [isPending, startTransition] = useTransition();
+
+startTransition(() => {
+  setSearchResult(heavyFilter(input));
+});
+```
+
+`isPending`은 비긴급 업데이트가 처리 중인지 나타낸다. 로딩 상태를 별도로 관리하지 않아도 된다.
+
+---
+
+## useDeferredValue
+
+값 자체를 지연시키는 훅이다. `useTransition`이 업데이트를 감싸는 방식이라면, `useDeferredValue`는 특정 값의 반영을 늦춘다. 직접 상태를 제어할 수 없는 외부 값에 유용하다.
+
+```js
+const deferredQuery = useDeferredValue(query);
+```
+
+`deferredQuery`는 긴급 업데이트가 끝난 뒤에 갱신된다. 입력 필드는 즉각 반응하고, 그 값으로 필터링된 결과는 여유 있게 업데이트되는 구조를 만들 수 있다.
+
+---
+
+## createRoot
+
+Concurrent 기능을 사용하려면 진입점을 `createRoot`로 바꿔야 한다. 기존 `ReactDOM.render`는 Concurrent 모드를 지원하지 않는다.
+
+```js
+// 기존
+ReactDOM.render(<App />, document.getElementById('root'));
+
+// React 18
+createRoot(document.getElementById('root')).render(<App />);
+```
+
+---
+
+## 정리
+
+Concurrent 기능은 렌더링에 우선순위를 도입한 것이다. 무거운 작업이 UI를 막지 않도록 React가 스케줄링을 직접 관리한다. `useTransition`과 `useDeferredValue`는 그 우선순위를 코드에서 표현하는 수단이다.

@@ -1,18 +1,16 @@
 ---
-title: "[react] useImperativeHandle hook 사용하기"
-date: "2025-03-11"
-description: "React의 단방향 데이터 흐름에서 벗어나 부모가 자식의 로직을 제어해야 하는 상황. 억지로 상태를 끌어올리지 않고 자식의 API만 노출하는 설계법을 공유합니다."
+title: "react useImperativeHandle hook으로 부모 상태제어"
+date: "2024-12-11"
+description: "React의 단방향 데이터 흐름에서 벗어나 부모가 자식의 로직을 제어해야 하는 상황. 억지로 상태를 끌어올리지 않는 설계법을 공유합니다."
 ---
 
-React의 기본 원칙은 데이터가 위에서 아래로 흐르는 **단방향(Top-down)** 구조다. 부모가 자식에게 Props를 전달하고, 자식은 이에 맞춰 화면을 그리는 선언적 방식이다.
+복잡한 폼(Form), 서드파티 라이브러리(차트, 에디터 등) 연동, 혹은 레거시 코드와 결합할 때 이 원칙만으로는 해결하기 까다로운 예외 상황이 발생한다. 대표적으로 부모 컴포넌트에서 특정 이벤트가 발생했을 때, **자식 컴포넌트 내부의 함수를 실행하거나 DOM에 포커스를 줘야 하는 경우**다.
 
-하지만 복잡한 폼(Form), 서드파티 라이브러리(차트, 에디터 등) 연동, 혹은 레거시 코드와 결합할 때 이 원칙만으로는 해결하기 까다로운 예외 상황이 발생한다. 대표적으로 부모 컴포넌트에서 특정 이벤트가 발생했을 때, **자식 컴포넌트 내부의 함수를 실행하거나 DOM에 포커스를 줘야 하는 경우**다.
-
-이때 상태(State)를 억지로 끌어올리지 않고, **forwardRef**와 **useImperativeHandle**을 활용해 자식 컴포넌트가 부모에게 특정 API만 노출하도록 캡슐화하는 방법을 정리해 본다.
+이때 상태에 함수를 drilling으로 억지로 내리지 않고, **forwardRef**와 **useImperativeHandle**을 활용해 제어하는 법을 정리한다.
 
 ---
 
-## 1. 상태 끌어올리기(Lifting State Up)의 한계
+## 1. 상태 끌어올리기의 한계
 
 텍스트 에디터 컴포넌트(`<CustomEditor />`)가 있고, 부모 컴포넌트의 '초기화' 버튼을 눌러 에디터 내용을 비워야 한다고 가정해 보자. 부모에 `isCleared` 같은 상태를 추가하는 방식을 떠올리기 쉽다.
 
@@ -24,7 +22,10 @@ const Parent = () => {
   return (
     <div>
       <button onClick={() => setIsCleared(true)}>에디터 초기화</button>
-      <CustomEditor isCleared={isCleared} onClearDone={() => setIsCleared(false)} />
+      <CustomEditor
+        isCleared={isCleared}
+        onClearDone={() => setIsCleared(false)}
+      />
     </div>
   );
 };
@@ -39,23 +40,19 @@ const Parent = () => {
 React에서 함수형 컴포넌트는 기본적으로 `ref`를 Props로 받을 수 없다. 부모가 `ref`를 전달하더라도 자식 컴포넌트 내부로 연결되지 않는다. 이를 가능하게 하는 것이 **forwardRef**다.
 
 ```tsx
-import { forwardRef } from 'react';
-
 const CustomEditor = forwardRef((props, ref) => {
   return <div ref={ref}>...</div>;
 });
 ```
 
-하지만 이 방식을 통해 실제 DOM 노드(div나 input)를 부모에게 통째로 넘기면, 부모가 자식의 DOM 구조에 직접 접근하고 조작할 수 있게 되어 **컴포넌트의 캡슐화**가 깨지게 된다.
-
 ---
 
-## 3. useImperativeHandle을 활용한 API 캡슐화
+## 3. useImperativeHandle을 활용한 API화
 
 자식 컴포넌트의 독립성을 유지하려면 DOM을 직접 노출하는 대신, 필요한 동작만 메서드 형태로 제공해야 한다. 이때 **useImperativeHandle**을 사용한다. 부모가 전달한 `ref` 객체에 자식이 직접 정의한 객체나 메서드를 바인딩하는 훅이다.
 
 ```tsx
-import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useImperativeHandle, useRef } from "react";
 
 // 1. 부모가 사용할 수 있는 메서드의 타입을 명확히 정의한다.
 export interface EditorRef {
@@ -73,10 +70,10 @@ const CustomEditor = forwardRef<EditorRef, Props>((props, ref) => {
     },
     clear: () => {
       if (inputRef.current) {
-        inputRef.current.value = '';
+        inputRef.current.value = "";
       }
-      console.log('에디터 초기화 완료');
-    }
+      console.log("에디터 초기화 완료");
+    },
   }));
 
   return (
@@ -96,8 +93,8 @@ export default CustomEditor;
 이제 부모 컴포넌트에서는 불필요한 상태(State) 없이, 자식 컴포넌트가 제공하는 메서드만 호출하면 된다. 리렌더링 문제도 자연스럽게 해결된다.
 
 ```tsx
-import { useRef } from 'react';
-import CustomEditor, { EditorRef } from './CustomEditor';
+import { useRef } from "react";
+import CustomEditor, { EditorRef } from "./CustomEditor";
 
 const Parent = () => {
   const editorRef = useRef<EditorRef>(null);
@@ -105,7 +102,9 @@ const Parent = () => {
   return (
     <div>
       <header>
-        <button onClick={() => editorRef.current?.focus()}>에디터 포커스</button>
+        <button onClick={() => editorRef.current?.focus()}>
+          에디터 포커스
+        </button>
         <button onClick={() => editorRef.current?.clear()}>전체 지우기</button>
       </header>
 
@@ -116,13 +115,3 @@ const Parent = () => {
   );
 };
 ```
-
----
-
-## 마무리
-
-* **성능:** 억지스러운 상태 변경을 막아 불필요한 리렌더링을 방지한다.
-* **캡슐화:** 부모가 자식의 내부 DOM 구조를 몰라도 되며, 자식은 철저하게 자신이 허락한 메서드만 외부에 노출한다.
-* **유지보수:** 서드파티 라이브러리(에디터, 차트 등)를 React 컴포넌트로 래핑할 때 안전하고 깔끔한 구조를 제공한다.
-
-React 공식 문서에서는 명령형(Imperative) 코드를 남용하지 말라고 권장한다. 기본적으로는 Props를 통한 선언적 제어가 바람직하다. 하지만 포커스 제어, 스크롤 이동, 외부 라이브러리 연동처럼 **상태로 표현하기 까다로운 행위(Action)를 제어해야 할 때**, `useImperativeHandle`은 아키텍처를 깔끔하게 유지할 수 있는 유용한 패턴이다.

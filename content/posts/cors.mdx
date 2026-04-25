@@ -1,0 +1,109 @@
+---
+title: "CORS는 왜 존재하고 실제로 어떻게 동작하나"
+date: "2024-04-24"
+description: "브라우저가 교차 출처 요청을 막는 이유와 CORS가 동작하는 원리를 정리한다."
+category: "Development"
+tags: ["CORS", "HTTP", "Browser", "Security", "Web"]
+---
+
+프론트엔드 개발을 하다 보면 한 번쯤 마주치는 에러가 있다.
+
+```
+Access to fetch at 'https://api.example.com' from origin 'https://app.example.com'
+has been blocked by CORS policy.
+```
+
+서버는 정상 응답했는데 브라우저가 막는다. CORS를 단순히 서버에서 헤더 추가해서 해결하는 문제로만 알고 있다면, 왜 이런 구조가 생겼는지 이해하면 실수가 줄어든다.
+
+---
+
+## 동일 출처 정책(SOP)
+
+브라우저에는 **동일 출처 정책(Same-Origin Policy)** 이 있다. 한 출처에서 로드된 문서가 다른 출처의 리소스에 접근하지 못하도록 막는 보안 정책이다.
+
+출처(Origin)는 **프로토콜 + 호스트 + 포트** 세 가지가 모두 같아야 동일 출처다. 비교 대상이 `https://example.com`이라면,
+
+- `https://example.com/page` — 경로만 다르므로 동일 출처
+- `http://example.com` — 프로토콜이 달라 다른 출처
+- `https://api.example.com` — 호스트가 달라 다른 출처
+- `https://example.com:8080` — 포트가 달라 다른 출처
+
+SOP가 없으면 악의적인 사이트가 로그인된 사용자의 세션을 이용해 다른 사이트의 API를 자유롭게 호출할 수 있다. 브라우저가 쿠키와 세션을 자동으로 포함시키기 때문에 이 공격(CSRF)은 실질적인 위협이다.
+
+---
+
+## CORS란
+
+SOP는 안전하지만 너무 엄격하다. 프론트엔드(`app.example.com`)와 API 서버(`api.example.com`)가 다른 출처인 건 흔한 구조인데 이걸 전부 막으면 쓸 수가 없다.
+
+**CORS(Cross-Origin Resource Sharing)** 는 서버가 "이 출처는 허용한다"고 명시적으로 선언할 수 있는 메커니즘이다. SOP를 우회하는 게 아니라, SOP의 예외를 서버가 직접 승인하는 방식이다.
+
+---
+
+## 단순 요청과 Preflight
+
+CORS 요청은 두 가지 방식으로 나뉜다.
+
+**단순 요청(Simple Request)** 은 조건을 만족하면 브라우저가 바로 요청을 보낸다.
+
+- 메서드가 `GET`, `POST`, `HEAD` 중 하나
+- 헤더가 `Content-Type`, `Accept` 등 안전한 헤더만 포함
+- `Content-Type`이 `application/x-www-form-urlencoded`, `multipart/form-data`, `text/plain` 중 하나
+
+서버가 응답에 `Access-Control-Allow-Origin` 헤더를 포함하면 브라우저가 응답을 허용한다.
+
+```
+Access-Control-Allow-Origin: https://app.example.com
+```
+
+**Preflight 요청** 은 단순 요청 조건을 벗어날 때 발생한다. `application/json`을 보내거나, `Authorization` 헤더를 포함하거나, `PUT`/`DELETE` 메서드를 쓰는 경우가 해당된다.
+
+브라우저가 실제 요청 전에 `OPTIONS` 메서드로 사전 확인을 먼저 보낸다.
+
+```
+OPTIONS /api/users HTTP/1.1
+Origin: https://app.example.com
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: Content-Type, Authorization
+```
+
+서버가 이 요청을 허용하면 응답한다.
+
+```
+Access-Control-Allow-Origin: https://app.example.com
+Access-Control-Allow-Methods: GET, POST, PUT
+Access-Control-Allow-Headers: Content-Type, Authorization
+Access-Control-Max-Age: 86400
+```
+
+`Access-Control-Max-Age`는 Preflight 결과를 캐시하는 시간이다. 매 요청마다 Preflight가 발생하면 비효율적이기 때문에 브라우저가 이 시간 동안 결과를 재사용한다.
+
+---
+
+## 쿠키를 포함한 요청
+
+기본적으로 CORS 요청에는 쿠키가 포함되지 않는다. 쿠키를 함께 보내려면 클라이언트와 서버 양쪽 모두 설정이 필요하다.
+
+```js
+// 클라이언트
+fetch("https://api.example.com/me", {
+  credentials: "include",
+});
+```
+
+```
+# 서버 응답 헤더
+Access-Control-Allow-Origin: https://app.example.com
+Access-Control-Allow-Credentials: true
+```
+
+이 때 `Access-Control-Allow-Origin`에 `*`(와일드카드)는 사용할 수 없다. 반드시 특정 출처를 명시해야 한다.
+
+---
+
+## 정리
+
+CORS는 브라우저가 강제하는 정책이다. 서버는 헤더로 허용 범위를 선언할 뿐이고, 실제로 막거나 허용하는 건 브라우저다. 서버 간 통신(Node.js에서 다른 서버 호출)에는 CORS가 적용되지 않는 이유가 여기 있다.
+
+- **단순 요청:** 사전 요청 없이 바로 보낸다. 안전한 메서드와 헤더 조건을 만족해야 한다.
+- **Preflight:** `OPTIONS`로 먼저 확인하고, 승인되면 실제 요청을 보낸다. `Max-Age`로 결과를 캐시할 수 있다.

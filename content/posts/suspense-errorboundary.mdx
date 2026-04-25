@@ -1,0 +1,103 @@
+---
+title: "Suspense와 ErrorBoundary를 하나로 합치기"
+date: "2021-10-22"
+description: "매번 두 컴포넌트로 감싸는 번거로움을 해결하기 위해 Suspense와 ErrorBoundary를 하나의 컴포넌트로 합친다."
+category: "Development"
+tags: ["React", "Suspense", "ErrorBoundary", "Frontend"]
+---
+
+데이터를 가져오는 컴포넌트를 쓸 때마다 두 가지로 감싸야 한다.
+
+```jsx
+function Main() {
+  return (
+    <ErrorBoundary fallback={<div>에러 발생!</div>}>
+      <Suspense fallback={<div>로딩 중...</div>}>
+        <UserInfo />
+      </Suspense>
+    </ErrorBoundary>
+  );
+}
+```
+
+로딩 처리는 `Suspense`에, 에러 처리는 `ErrorBoundary`에 위임하는 구조다. 매번 이 두 컴포넌트를 함께 쓴다면 하나로 합치는 게 낫다.
+
+---
+
+## 리셋 기능을 갖춘 ErrorBoundary
+
+React 공식 문서의 `ErrorBoundary`는 에러가 난 뒤 상태를 리셋하는 기능이 없다. 재시도 버튼을 만들려면 `resetError` 메서드를 직접 추가해야 한다.
+
+```jsx
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+    this.resetError = this.resetError.bind(this);
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error(error, errorInfo);
+  }
+
+  resetError() {
+    this.setState({ hasError: false });
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback(this.resetError);
+    }
+    return this.props.children;
+  }
+}
+```
+
+`fallback`을 함수로 받아 `resetError`를 넘겨준다. 사용하는 쪽에서 재시도 버튼을 자유롭게 구성할 수 있다.
+
+---
+
+## 하나로 합치기
+
+`ErrorBoundary` 안에 `Suspense`를 포함한 `AsyncBoundary`를 만든다.
+
+```jsx
+function AsyncBoundary({ errorFallback, loadingFallback, children }) {
+  return (
+    <ErrorBoundary fallback={errorFallback}>
+      <Suspense fallback={loadingFallback}>
+        {children}
+      </Suspense>
+    </ErrorBoundary>
+  );
+}
+```
+
+이제 사용하는 쪽은 하나만 쓰면 된다.
+
+```jsx
+function Main() {
+  return (
+    <AsyncBoundary
+      loadingFallback={<div>로딩 중...</div>}
+      errorFallback={(reset) => (
+        <div>
+          에러 발생! <button onClick={reset}>다시 시도</button>
+        </div>
+      )}
+    >
+      <UserInfo />
+    </AsyncBoundary>
+  );
+}
+```
+
+---
+
+## 정리
+
+`Suspense`와 `ErrorBoundary`는 항상 같이 쓰인다. 둘을 매번 따로 감싸는 건 중복이다. `AsyncBoundary`로 합치면 선언부가 줄고, 재시도 로직도 한 곳에서 관리할 수 있다.
