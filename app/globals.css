@@ -2,6 +2,119 @@
 @tailwind components;
 @tailwind utilities;
 
+/* =========================================================
+   A4 인쇄 / PDF 저장
+   ========================================================= */
+@media print {
+  @page {
+    size: A4;
+    margin: 15mm;
+
+    @top-center {
+      content: "최준경 | 이력서";
+      font-size: 9pt;
+      color: #94a3b8;
+    }
+
+    @bottom-center {
+      content: counter(page) " / " counter(pages);
+      font-size: 9pt;
+      color: #94a3b8;
+    }
+  }
+
+  html {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* 인쇄 시 불필요한 UI 숨기기 */
+  .print\:hidden,
+  footer {
+    display: none !important;
+  }
+
+  /* 바디 초기화 */
+  body {
+    background: white !important;
+    color: #0f172a !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* ── 미리보기 컨테이너 인쇄 스타일 초기화 ──
+     preview wrapper의 gray 배경·그림자·패딩을 제거하고
+     children이 정상적으로 출력되도록 함 */
+  .resume-preview-bg {
+    background: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  .resume-preview-page {
+    width: auto !important;
+    min-height: auto !important;
+    box-shadow: none !important;
+    background-image: none !important;
+    background-color: white !important;
+    position: static !important;
+  }
+
+  .resume-preview-content {
+    padding: 0 !important;
+  }
+
+  /* ── 이력서 콘텐츠 색상 ── */
+  #resume-content {
+    color: #0f172a !important;
+    background: white !important;
+  }
+
+  /* 다크모드 텍스트 색상 강제 해제 */
+  #resume-content h1,
+  #resume-content h2,
+  #resume-content h3,
+  #resume-content h4 {
+    color: #0f172a !important;
+  }
+
+  #resume-content p,
+  #resume-content span,
+  #resume-content li {
+    color: #334155 !important;
+  }
+
+  #resume-content a {
+    color: #2563eb !important;
+  }
+
+  /* ── 페이지 경계 처리 ──
+     break-inside: avoid는 "요소 전체가 한 페이지에 들어갈 때"만 유효하다.
+     큰 컨테이너(section, ol>li)에 쓰면 못 들어갈 경우 통째로 다음 페이지로
+     밀려나 이전 페이지에 공백이 생긴다 → 절대 금지.
+     한두 줄짜리 불릿(ul>li)에만 안전하게 적용. */
+
+  /* 개별 불릿 포인트: 한 항목이 줄 중간에서 잘리지 않도록 */
+  #resume-content ul > li {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* 제목은 바로 뒤에서 페이지 구분 금지 (제목만 홀로 페이지 끝에 남지 않도록) */
+  #resume-content h2,
+  #resume-content h3,
+  #resume-content h4 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* 링크 URL 출력 방지 */
+  a[href]::after {
+    content: none !important;
+  }
+}
+
 /* Pretendard 폰트 정의 */
 @font-face {
   font-family: "Pretendard-Regular";

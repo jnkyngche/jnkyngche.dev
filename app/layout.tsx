@@ -21,7 +21,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <PageShell>{children}</PageShell>
 
           {/* 다크모드 버튼을 우측 상단에 고정 */}
-          <div className="fixed bottom-8 right-8 z-40">
+          <div className="fixed bottom-8 right-8 z-40 print:hidden">
             <ModeToggle />
           </div>
 
