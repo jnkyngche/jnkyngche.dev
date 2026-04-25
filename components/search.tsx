@@ -11,6 +11,8 @@ interface SearchResult {
   slug: string;
   type: "post";
   content: string;
+  anchorId?: string;
+  sectionTitle?: string;
 }
 
 export function Search() {
@@ -133,6 +135,8 @@ export function Search() {
 
           let score = 0;
           let matchedContent = "";
+          let anchorId: string | undefined;
+          let sectionTitle: string | undefined;
 
           // 제목 검색 (가장 높은 우선순위)
           if (post.title && post.title.includes(searchQuery)) {
@@ -153,15 +157,35 @@ export function Search() {
             post.body.raw.includes(searchQuery)
           ) {
             score += 10;
+            const content = post.body.raw;
+            const index = content.indexOf(searchQuery);
+
             if (!matchedContent) {
-              const content = post.body.raw;
-              const index = content.indexOf(searchQuery);
               const start = Math.max(0, index - 50);
               const end = Math.min(
                 content.length,
                 index + searchQuery.length + 50
               );
               matchedContent = content.slice(start, end).trim();
+            }
+
+            // 매칭 위치 이전에서 가장 가까운 헤딩 찾기
+            const linesBeforeMatch = content.slice(0, index).split("\n").reverse();
+            for (const line of linesBeforeMatch) {
+              const trimmed = line.trim();
+              if (trimmed.startsWith("###")) {
+                sectionTitle = trimmed.replace(/^###\s*/, "");
+                break;
+              } else if (trimmed.startsWith("##") && !trimmed.startsWith("###")) {
+                sectionTitle = trimmed.replace(/^##\s*/, "");
+                break;
+              }
+            }
+
+            if (sectionTitle) {
+              anchorId = sectionTitle
+                .toLowerCase()
+                .replace(/[^a-z0-9가-힣]+/g, "-");
             }
           }
 
@@ -172,6 +196,8 @@ export function Search() {
               slug: post.slug || "",
               type: "post",
               content: matchedContent || "",
+              anchorId,
+              sectionTitle,
             });
           }
         } catch (postError) {
@@ -247,7 +273,10 @@ export function Search() {
   const handleResultClick = (result: SearchResult) => {
     try {
       if (result.slug) {
-        router.push(result.slug);
+        const url = result.anchorId
+          ? `${result.slug}#${result.anchorId}`
+          : result.slug;
+        router.push(url);
         setIsOpen(false);
         setQuery("");
       }
@@ -426,8 +455,21 @@ export function Search() {
                           <div className="text-xs text-slate-500 dark:text-slate-500 mt-2 line-clamp-1">
                             {highlightText(result.content, query)}
                           </div>
-                          <div className="text-xs text-slate-400 dark:text-slate-500 mt-1">
-                            포스트
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className="text-xs text-slate-400 dark:text-slate-500">
+                              포스트
+                            </span>
+                            {result.sectionTitle && (
+                              <>
+                                <span className="text-xs text-slate-300 dark:text-slate-600">·</span>
+                                <span className="text-xs text-blue-500 dark:text-blue-400 flex items-center gap-1">
+                                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                  </svg>
+                                  {result.sectionTitle}
+                                </span>
+                              </>
+                            )}
                           </div>
                         </div>
                       </div>

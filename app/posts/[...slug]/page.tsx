@@ -81,11 +81,6 @@ export default async function PostPage({ params }: PostProps) {
       <article className="w-full prose dark:prose-invert">
         {/* 헤더 섹션 */}
         <h1 className="mb-2 mt-8">{post.title}</h1>
-        {post.description && (
-          <p className="text-lg text-slate-600 dark:text-slate-300 mb-0 mt-0">
-            {post.description}
-          </p>
-        )}
         <p className="text-sm text-slate-500 dark:text-slate-400 mt-4 mb-0 text-right">
           {formatDate(post.date)}
         </p>
