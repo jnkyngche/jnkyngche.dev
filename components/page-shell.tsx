@@ -26,11 +26,13 @@ export function PageShell({ children }: PageShellProps) {
     <div
       className={[
         "mx-auto pt-10 pb-16 px-4 min-h-screen flex flex-col",
-        isResumePage ? "max-w-3xl lg:max-w-4xl" : "max-w-2xl",
+        isResumePage
+          ? "max-w-3xl lg:max-w-4xl print:max-w-none print:p-0 print:m-0 print:block print:min-h-0"
+          : "max-w-2xl",
       ].join(" ")}
     >
       <Header />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 print:flex-none">{children}</main>
       <Footer />
     </div>
   );
