@@ -8,7 +8,7 @@ tags: ["CSS-in-JS", "Zero-Runtime", "Vanilla Extract", "Panda CSS", "StyleX", "N
 
 React 생태계에서 styled-components와 emotion으로 대표되던 런타임 CSS-in-JS는 오랫동안 표준처럼 사용되었다. 하지만 Next.js의 App Router(React Server Components)가 등장하고 프론트엔드 성능 최적화의 기준이 높아지면서, 런타임 오버헤드를 발생시키는 기존 방식은 한계에 부딪혔다.
 
-그 대안으로 Tailwind CSS가 부상했지만, HTML 클래스 속성이 길어지는 단점을 피하고 컴포넌트 파일 내에서 JS/TS 문법으로 스타일을 캡슐화하려는 요구사항은 계속되었다. 이러한 간극을 메우기 위해 등장한 기술이 <strong>Zero-Runtime CSS-in-JS</strong>다.
+그 대안으로 Tailwind CSS가 부상했지만, HTML 클래스 속성이 길어지는 단점을 피하고 컴포넌트 파일 내에서 JS/TS 문법으로 스타일을 캡슐화하려는 요구사항은 계속되었다. 이러한 간극을 메우기 위해 등장한 기술이 **Zero-Runtime CSS-in-JS**다.
 
 ---
 
@@ -16,9 +16,9 @@ React 생태계에서 styled-components와 emotion으로 대표되던 런타임 
 
 Zero-Runtime CSS-in-JS 라이브러리(Vanilla Extract, Panda CSS 등)의 문법은 기존 CSS-in-JS와 유사하다. 개발자는 JavaScript나 TypeScript 파일 내부에서 객체나 템플릿 리터럴 형태로 스타일을 작성한다.
 
-가장 큰 차이점은 <strong>브라우저에서 스타일이 생성되는 시점</strong>이다. 
+가장 큰 차이점은 **브라우저에서 스타일이 생성되는 시점**이다. 
 
-기존 방식은 사용자가 페이지에 접속해 JS 번들을 다운로드하고 실행(Runtime)할 때 동적으로 `<style>` 태그를 주입했다. 반면, Zero-Runtime 방식은 Webpack이나 Vite 같은 번들러가 프로젝트를 <strong>빌드(Build)하는 시점에 작성된 스타일 코드를 모두 분석하여 순수 .css 파일로 추출(Extract)</strong>한다.
+기존 방식은 사용자가 페이지에 접속해 JS 번들을 다운로드하고 실행(Runtime)할 때 동적으로 `<style>` 태그를 주입했다. 반면, Zero-Runtime 방식은 Webpack이나 Vite 같은 번들러가 프로젝트를 **빌드(Build)하는 시점에 작성된 스타일 코드를 모두 분석하여 순수 .css 파일로 추출(Extract)**한다.
 
 결과적으로 브라우저가 다운로드하는 JS 번들에는 스타일 생성 로직이 포함되지 않는다.
 
@@ -26,7 +26,7 @@ Zero-Runtime CSS-in-JS 라이브러리(Vanilla Extract, Panda CSS 등)의 문법
 
 ## 2. React Server Components(RSC) 아키텍처와의 완벽한 호환성
 
-Zero-Runtime CSS-in-JS가 최근 엔터프라이즈 환경에서 주목받는 가장 큰 이유는 <strong>Next.js App Router의 서버 컴포넌트(RSC) 환경을 온전히 지원</strong>하기 때문이다.
+Zero-Runtime CSS-in-JS가 최근 엔터프라이즈 환경에서 주목받는 가장 큰 이유는 **Next.js App Router의 서버 컴포넌트(RSC) 환경을 온전히 지원**하기 때문이다.
 
 React Server Components는 클라이언트로 전송되는 자바스크립트 번들 크기를 줄이기 위해, 서버에서 컴포넌트를 렌더링하고 결과물(직렬화된 UI 트리)만 브라우저로 전달하는 아키텍처다.
 
@@ -34,7 +34,7 @@ React Server Components는 클라이언트로 전송되는 자바스크립트 �
 
 반면, Zero-Runtime 방식은 빌드 타임에 추출된 순수 정적 CSS 파일을 생성한다. Next.js는 이 정적 CSS 파일을 네이티브하게 처리하여 HTML 렌더링 시 `<link rel="stylesheet">` 형태로 안전하게 주입한다. 
 
-결과적으로 개발자는 JS/TS 환경에서 스타일을 선언하고 캡슐화하는 개발자 경험(DX)을 유지하면서도, <strong>컴포넌트를 100% 서버 컴포넌트로 유지하여 초기 로딩 속도(LCP)와 번들 사이즈를 최적화</strong>할 수 있다.
+결과적으로 개발자는 JS/TS 환경에서 스타일을 선언하고 캡슐화하는 개발자 경험(DX)을 유지하면서도, **컴포넌트를 100% 서버 컴포넌트로 유지하여 초기 로딩 속도(LCP)와 번들 사이즈를 최적화**할 수 있다.
 
 ---
 
@@ -42,14 +42,14 @@ React Server Components는 클라이언트로 전송되는 자바스크립트 �
 
 Zero-Runtime 진영을 이끄는 대표적인 기술들은 다음과 같다.
 
-* <strong>Vanilla Extract:</strong> TypeScript와의 호환성이 가장 뛰어난 라이브러리다. `.css.ts` 확장자를 사용하며, 타입 추론을 통해 스타일 작성 시 발생하는 오타나 잘못된 속성 값을 컴파일 단계에서 방지한다.
-* <strong>Panda CSS:</strong> Chakra UI 팀에서 개발한 스타일링 도구다. Tailwind의 유틸리티 클래스 개념을 차용하면서, 이를 JS/TS 환경에서 타입 안전(Type-safe)하게 작성할 수 있는 개발 환경을 제공한다.
-* <strong>StyleX:</strong> Meta(Facebook)에서 내부적으로 사용하다 오픈소스로 공개한 라이브러리다. 대규모 애플리케이션에서 발생하는 CSS 충돌과 용량 문제를 해결하기 위해, 작성된 스타일을 최적화된 Atomic CSS로 컴파일하는 데 특화되어 있다.
+* **Vanilla Extract:** TypeScript와의 호환성이 가장 뛰어난 라이브러리다. `.css.ts` 확장자를 사용하며, 타입 추론을 통해 스타일 작성 시 발생하는 오타나 잘못된 속성 값을 컴파일 단계에서 방지한다.
+* **Panda CSS:** Chakra UI 팀에서 개발한 스타일링 도구다. Tailwind의 유틸리티 클래스 개념을 차용하면서, 이를 JS/TS 환경에서 타입 안전(Type-safe)하게 작성할 수 있는 개발 환경을 제공한다.
+* **StyleX:** Meta(Facebook)에서 내부적으로 사용하다 오픈소스로 공개한 라이브러리다. 대규모 애플리케이션에서 발생하는 CSS 충돌과 용량 문제를 해결하기 위해, 작성된 스타일을 최적화된 Atomic CSS로 컴파일하는 데 특화되어 있다.
 
 ---
 
 ## 마무리
 
-Zero-Runtime CSS-in-JS는 빌드 타임 CSS 추출을 통한 <strong>성능 이점(RSC 호환성)</strong>과 JS/TS 캡슐화, 동적 타이핑을 제공하는 <strong>개발자 경험</strong>을 결합한 형태다. 
+Zero-Runtime CSS-in-JS는 빌드 타임 CSS 추출을 통한 **성능 이점(RSC 호환성)**과 JS/TS 캡슐화, 동적 타이핑을 제공하는 **개발자 경험**을 결합한 형태다. 
 
 타입 안정성과 렌더링 최적화가 필수적인 B2B 어드민 페이지나 대규모 플랫폼 서비스, 그리고 Next.js App Router 환경을 성공적으로 안착시키려는 프로젝트에서 가장 합리적인 스타일링 아키텍처로 활용될 수 있다.

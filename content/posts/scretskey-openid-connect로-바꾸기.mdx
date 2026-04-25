@@ -1,58 +1,58 @@
 ---
 title: "[AWS] GitHub Actions OIDC 도입으로 Access Key 없이 배포하기"
 date: "2025-05-28"
-description: "AWS Access Key를 제거하고, OIDC(OpenID Connect)를 도입하여 키 관리 부담 없이 안전한 배포 파이프라인을 구축한 과정을 공유합니다."
+description: "AWS Access Key를 제거하고, OIDC(OpenID Connect)를 도입해 키 관리 없이 안전한 배포 파이프라인을 구축한 과정"
 ---
 
-기존에는 IAM에 사용자를 추가하고 정책에 권한을 추가하여 `AWS_ACCESS_KEY_ID`와 `AWS_SECRET_ACCESS_KEY`를 GitHub Secrets에 등록해서 사용했습니다. 깃헙 러너에서 배포 시 로그인하는 방법으로 사용했었는데, 운영하면서 몇 가지 **보안적 찜찜함**과 **관리의 불편함**을 느꼈습니다.
+기존에는 IAM 사용자를 생성하고 `AWS_ACCESS_KEY_ID`와 `AWS_SECRET_ACCESS_KEY`를 GitHub Secrets에 등록해 배포 시 인증에 사용했다.
 
-1.  **보안 리스크:** 액세스 키는 AWS의 서비스에 접근이 가능한 사용자의 키인데 다른 서비스인 github에 올려둔다는건 찜찜함이 있음.
-2.  **키 로테이션의 압박:** AWS 보안 권장 사항(Security Hub, IAM Best Practices)에 따르면 **90일마다 키를 교체**해야 함. 권고사항에 따라 매번 시크릿을 교체해줘야하는 관리의 불편함이 있음.
+**문제:**
+1. **보안 리스크:** AWS 접근 키를 외부 서비스(GitHub)에 저장하는 구조.
+2. **키 로테이션:** AWS 보안 권고(IAM Best Practices)에 따르면 90일마다 키를 교체해야 하며, 이를 매번 수동으로 관리해야 한다.
 
-그래서 방법을 찾던 중 **OIDC(OpenID Connect)를 도입** 하여 키 관리 부담 없이 배포 파이프라인을 구축하기로 했습니다.
+**해결:** **OIDC(OpenID Connect)**를 도입해 키 없이 IAM 역할 기반으로 인증한다.
 
 ---
 
 ## OIDC (OpenID Connect)란?
 
-\*OpenID Connect (OIDC)\*\*는 OAuth 2.0 프로토콜을 기반으로 한 사용자 신원 확인(Identity Authentication) 표준 프로토콜입니다.
+**OpenID Connect (OIDC)**는 OAuth 2.0 기반의 신원 확인(Identity Authentication) 표준 프로토콜이다.
 
-- AWS OIDC는 이 표준을 활용하여 다음과 같은 구조를 만듭니다.
-- Identity Provider (IdP): 신원을 보증하는 곳 (여기서는 GitHub).
-- Service Provider (SP): 서비스를 제공하는 곳 (여기서는 AWS).
-- Trust Relationship (신뢰 관계): AWS에게 "GitHub이 발행한 토큰(JWT)은 믿어도 된다"라고 설정하는 것.
-- **작동 원리:** GitHub Actions가 배포를 시작할 때, AWS에게 요청하면 AWS가 검증 후 **1시간짜리 임시 토큰(Role)** 을 발급해줍니다.
+AWS OIDC 구조:
+- **Identity Provider (IdP):** 신원을 보증하는 곳 (GitHub)
+- **Service Provider (SP):** 서비스를 제공하는 곳 (AWS)
+- **Trust Relationship:** AWS가 "GitHub이 발행한 JWT 토큰을 신뢰한다"는 설정
+
+GitHub Actions가 배포를 시작하면, AWS가 JWT를 검증한 후 **1시간짜리 임시 토큰**을 발급한다.
 
 ---
 
 ## 적용 과정
 
-크게 AWS 설정과 GitHub 설정 두 단계로 진행했습니다.
-
 ### 1단계: AWS 설정 (자격 증명 공급자 및 역할 생성)
 
-1.  **자격 증명 공급자(Identity Provider) 생성:**
-    - AWS IAM > 자격 증명 공급자 메뉴 접속.
-    - GitHub(`token.actions.githubusercontent.com`)를 OIDC 공급자로 등록합니다.
-2.  **IAM 역할(Role) 생성:**
-    - `GitHubDeployRole`(원하는 이름)이라는 역할을 만들고, 배포에 필요한 권한(ECR, SSM, S3 등)을 연결합니다. 이전 사용자에 연결했던 정책 그대로...
-3.  **신뢰 관계(Trust Relationship) 설정:**
-    - 아무나 이 역할을 쓰면 안 되므로, **내 특정 리포지토리에서만** 이 역할을 수행할 수 있도록 조건(`Condition`)을 걸어줍니다.
+**자격 증명 공급자(Identity Provider) 생성:**
+- AWS IAM > 자격 증명 공급자 > GitHub(`token.actions.githubusercontent.com`)를 OIDC 공급자로 등록한다.
+
+**IAM 역할(Role) 생성:**
+- `GitHubDeployRole` 이름으로 역할을 만들고 배포에 필요한 권한(ECR, SSM 등)을 연결한다.
+
+**신뢰 관계(Trust Relationship) 설정:**
+- 특정 리포지토리에서만 역할을 수행할 수 있도록 조건(`Condition`)을 설정한다.
 
 ```json
-/* 신뢰 관계 정책 예시 (Trust Relationship) */
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Effect": "Allow",
       "Principal": {
-        "Federated": "arn:aws:iam::[내AccountID]:oidc-provider/token.actions.githubusercontent.com"
+        "Federated": "arn:aws:iam::[AccountID]:oidc-provider/token.actions.githubusercontent.com"
       },
       "Action": "sts:AssumeRoleWithWebIdentity",
       "Condition": {
         "StringLike": {
-          "token.actions.githubusercontent.com:sub": "repo:내GitHub아이디/내리포지토리이름:*"
+          "token.actions.githubusercontent.com:sub": "repo:GitHub아이디/리포지토리이름:*"
         }
       }
     }
@@ -60,14 +60,14 @@ description: "AWS Access Key를 제거하고, OIDC(OpenID Connect)를 도입하�
 }
 ```
 
-### 2단계: GitHub 설정 (Secrets 교체)
+### 2단계: GitHub Secrets 교체
 
-1.  기존의 `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`를 삭제하고
-2.  대신 `AWS_ROLE_ARN`이라는 이름으로 위에서 생성한 역할의 **ARN 주소**만 등록했습니다.
+1. 기존 `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` 삭제.
+2. `AWS_ROLE_ARN`이라는 이름으로 위에서 생성한 역할의 **ARN**만 등록.
 
 ### 3단계: 워크플로우(YAML) 수정
 
-`deploy.yml` 파일에서 인증 방식을 변경했습니다.
+`deploy.yml` 파일에서 인증 방식을 변경한다.
 
 ```yaml
 # [Before] 기존 방식 (Access Key)
@@ -78,14 +78,13 @@ description: "AWS Access Key를 제거하고, OIDC(OpenID Connect)를 도입하�
 
 
 # [After] 변경된 방식 (OIDC Role)
-# 이 부분이 꼭 필요합니다!
 permissions:
   id-token: write # AWS 인증(OIDC) 요청을 위해 필수
-  contents: read # 코드 체크아웃을 위해 필수
+  contents: read  # 코드 체크아웃을 위해 필수
 
 - uses: aws-actions/configure-aws-credentials@v4
   with:
-    role-to-assume: ${{ secrets.AWS_ROLE_ARN }} # 역할 ARN 사용
+    role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
     aws-region: ${{ secrets.AWS_REGION }}
 ```
 
@@ -93,5 +92,5 @@ permissions:
 
 ## 마무리
 
-이제 **SSM**으로 서버 접속 보안을 챙기고, **OIDC**로 인증 보안까지 챙겼으니 훨씬 든든한 배포 환경이 되었습니다.
-90일마다 키를 교체해줘야 하는 부담이 없어졌습니다.
+- GitHub Secrets에서 `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`를 제거하고 역할 ARN 하나만 남긴다.
+- 90일 키 로테이션이 불필요해진다. 임시 토큰은 1시간 후 자동 만료된다.
