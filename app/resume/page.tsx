@@ -75,11 +75,10 @@ export default function ResumePage() {
                 </a>
               </div>
               <p className="mt-4 text-slate-600 dark:text-slate-300 text-base leading-7">
-                기술 부채가 쌓인 시스템을 팀이 다시 빠르게 움직일 수 있는 구조로
-                되돌리는 일을 해왔습니다. 구조가 팀의 속도를 막기 시작하는
-                순간을 알아채고 깊이 파고드는걸 선호합니다. 새로운 기술보다 지금
-                구조의 어디가 문제인지를 먼저 찾고 팀이 오래 쓸 수 있는 방향으로
-                결정하고자하는 개발자이고 싶습니다.
+                누적된 기술 부채를 걷어내고, 시스템 구조가 팀의 속도를 저해하는
+                순간을 포착해 기민하게 움직일 수 있는 환경으로 개선해 왔습니다.
+                이러한 구조적 안정화를 바탕으로, 궁극적으로 비즈니스가 직면한
+                진짜 문제를 해결하는 개발을 지향합니다.
               </p>
             </div>
 
@@ -122,7 +121,7 @@ export default function ResumePage() {
               <p className="mt-1 mb-4 text-[14px] text-slate-500 dark:text-slate-400 leading-relaxed">
                 쿠팡·네이버 구매 가구의 입고(창고)→배송→시공/설치→반품까지 전
                 과정을 지원하는 서비스의 운영 웹(관리자/고객/물류) 및 기사용
-                모바일 앱 개발을 담당했습니다.
+                모바일 앱 개발을 담당했음
               </p>
 
               <ul className="space-y-4 text-base text-slate-600 dark:text-slate-300 leading-relaxed">
@@ -176,11 +175,11 @@ export default function ResumePage() {
                   </div>
                   <div className="ml-5 space-y-2 text-[14px]">
                     <p className="text-[15px] text-slate-600 dark:text-slate-300">
-                      JSP 기반 프로젝트에서 JS 로딩 타이밍 불일치로 인한 클릭
-                      이벤트 미동작 버그가 반복됐고, 버튼·테이블 등 공통 UI를
-                      재사용할 수 없어 동일한 코드가 여러 페이지에 중복됐음.
-                      또한 JSP 구조에 익숙하지 않은 신규 개발자의 온보딩 비용이
-                      높아 팀 확장에 걸림돌이 됐음
+                      JSP 프로젝트에서 RequireJS의 비동기 로딩 타이밍 불일치로
+                      인해 클릭 이벤트 미동작 버그가 반복됐고, 공통 UI의
+                      재사용이 불가능해 코드 중복이 심했음. JSP와 RequireJS가
+                      혼재된 구조는 신규 개발자의 온보딩 비용을 가중시켜 팀
+                      확장에 걸림돌이 됐음
                     </p>
                     <ul className="space-y-1 ml-3 text-slate-500 dark:text-slate-400">
                       <li className="flex items-start gap-1.5">
@@ -214,7 +213,7 @@ export default function ResumePage() {
                         JS 로딩 타이밍 문제가 해소됐고, 버튼·테이블 등 공통 UI를
                         컴포넌트로 분리해 코드 중복이 줄었음. 신규 개발자가 JSP
                         학습 없이 React 기반 코드베이스에 즉시 합류할 수 있게
-                        되어 온보딩 비용도 줄어듦
+                        되어 온보딩 비용도 줄었음
                       </span>
                     </p>
                   </div>
@@ -229,35 +228,57 @@ export default function ResumePage() {
                   </div>
                   <div className="ml-5 space-y-2 text-[14px]">
                     <p className="text-[15px] text-slate-600 dark:text-slate-300">
-                      쿠팡과 네이버 스마트스토어 각각의 관리자 페이지를 신규로
-                      구현해야 했는데, 상품 필터링·팝업·재고 수정 등 사용자
-                      상호작용이 많아 JSP로는 상태 관리가 어렵고 유지보수가 힘든
-                      구조가 될 것이 명확했음
+                      기존 JSP 기반의 잦은 페이지 새로고침 방식으로는 관리자가
+                      요구하는 빠르고 끊김 없는 업무 흐름(팝업 내 작업, 즉각적인
+                      목록 갱신 등)을 제공하기 어려웠음. 매끄러운 UX와 실시간
+                      데이터 정합성을 확보하기 위해 Next.js와 TanStack Query를
+                      선제적으로 도입
                     </p>
                     <ul className="space-y-1 ml-3 text-slate-500 dark:text-slate-400">
                       <li className="flex items-start gap-1.5">
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
-                          목록에서 팝업을 열어 재고를 등록·수정하고, 저장 후
-                          TanStack Query 캐시를 invalidate해 목록 자동 갱신
+                          서버에서 prefetchQuery로 초기 데이터를 로드하고
+                          클라이언트에 Hydration을 적용해 대량 상품 데이터의
+                          초기 렌더링 속도 개선
                         </span>
                       </li>
                       <li className="flex items-start gap-1.5">
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
-                          Next.js 서버사이드에서 초기 데이터를 prefetch 후
-                          TanStack Query로 hydrate해 초기 로딩 속도 확보
+                          팝업 내 재고 수정 완료 시 invalidateQueries로
+                          백그라운드 자동 갱신을 구현하되, 모달 닫기 시
+                          refetch와 데이터 변경이 경합하는 문제를 해결해
+                          데이터 정합성 보장
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-1.5">
+                        <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
+                        <span>
+                          재고 수정 요청 시 서버 응답 전에 캐시를 미리
+                          반영해 UI가 즉각 반응하도록 하고, 실패 시 이전
+                          상태로 롤백 처리
                         </span>
                       </li>
                     </ul>
                     <p className="flex items-start gap-1.5 text-[14.5px] text-slate-800 dark:text-slate-100">
                       <span className="flex-shrink-0">→</span>
                       <span>
-                        복잡한 상호작용을 컴포넌트 단위로 관리해 코드 가독성과
-                        유지보수성을 확보했고, 페이지 이동 없이 팝업 내에서
-                        작업이 완결되어 관리자 업무 흐름이 개선됨.
+                        페이지 새로고침 없이 팝업 내 작업부터 목록 자동 갱신까지
+                        끊김 없이 처리되는 관리자 UX를 실현했고, 초기 데이터
+                        로딩 속도를 개선해 대량 상품 목록도 빠르게 표시할 수
+                        있게 됨
                       </span>
                     </p>
+                  </div>
+                </li>
+
+                <li className="space-y-2">
+                  <div className="flex items-start gap-1.5">
+                    <span className="mt-[0.65rem] h-1 w-1 rounded-full bg-slate-400 dark:bg-slate-500 flex-shrink-0" />
+                    <span className="font-medium text-slate-800 dark:text-slate-100">
+                      고객사 버그 문의 실시간 대응 및 레거시 유지보수
+                    </span>
                   </div>
                 </li>
               </ul>
@@ -277,9 +298,9 @@ export default function ResumePage() {
                 </span>
               </div>
               <p className="mt-1 mb-4 text-[14px] text-slate-500 dark:text-slate-400 leading-relaxed">
-                오로지(창고 공유 중개·한라건설 외주)와 한국경제 홈페이지 외주,
-                나집사랩(부동산 지도 서비스)의 프론트엔드 개발 및 유지보수를
-                담당했습니다.
+                오로지(창고 공유 중개·한라건설 외주), 한국경제 홈페이지(외주),
+                나집사랩(인하우스·부동산 지도 서비스)의 프론트엔드 개발 및
+                유지보수를 담당했음
               </p>
 
               <ul className="space-y-4 text-base text-slate-600 dark:text-slate-300 leading-relaxed">
@@ -307,6 +328,13 @@ export default function ResumePage() {
                         </span>
                       </li>
                     </ul>
+                    <p className="flex items-start gap-1.5 text-[14.5px] text-slate-800 dark:text-slate-100">
+                      <span className="flex-shrink-0">→</span>
+                      <span>
+                        외주 2건의 프론트엔드를 단독으로 설계·구축해 모두
+                        서비스 런칭까지 완수, 인하우스 서비스 유지보수 병행
+                      </span>
+                    </p>
                   </div>
                 </li>
               </ul>
@@ -350,14 +378,11 @@ export default function ResumePage() {
                     </svg>
                   </a>
                 </div>
-                <span className="text-[14px] text-slate-500 dark:text-slate-400 font-mono flex-shrink-0">
-                  2025.11 – 현재
-                </span>
               </div>
 
               <p className="mt-1 mb-4 text-[14px] text-slate-500 dark:text-slate-400 leading-relaxed">
                 과거 자산 데이터(비트코인, 주식 등)를 기반으로 수익률을
-                시뮬레이션하고, 이를 영수증 형태로 시각화한 웹 서비스입니다.
+                시뮬레이션하고, 이를 영수증 형태로 시각화한 웹 서비스
               </p>
 
               <ul className="space-y-4 text-base text-slate-600 dark:text-slate-300 leading-relaxed">
@@ -372,8 +397,8 @@ export default function ResumePage() {
                   <div className="ml-5 space-y-2 text-[14px]">
                     <p className="text-[15px] text-slate-600 dark:text-slate-300">
                       <span>
-                        개인 프로젝트 특성상 관리 비용을 최소화하면서도, 적당한
-                        보안처리도 가능해야 했음
+                        개인 프로젝트 특성상 관리 비용을 최소화(0원)하면서도,
+                        적당한 보안처리도 가능해야 했음
                       </span>
                     </p>
                     <ul className="space-y-1 ml-3 text-slate-500 dark:text-slate-400">
@@ -410,8 +435,8 @@ export default function ResumePage() {
                   <div className="ml-5 space-y-2 text-[14px]">
                     <p className="text-[15px] text-slate-600 dark:text-slate-300">
                       <span>
-                        자산 가격 데이터를 매일 최신 상태로 유지해야 했고, 수집
-                        실패 시 빠르게 감지할 수단이 필요했음
+                        주식, 코인 가격 데이터를 매일 최신 상태로 유지해야 했고,
+                        수집 실패 시 빠르게 감지할 수단이 필요했음
                       </span>
                     </p>
                     <ul className="space-y-1 ml-3 text-slate-500 dark:text-slate-400">
