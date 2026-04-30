@@ -1,0 +1,94 @@
+---
+title: "Server/Client Component 경계에서 지켜야 할 것들"
+date: "2025-01-30"
+description: "서버와 클라이언트 컴포넌트 각각에 들어가면 안 되는 것들, Props를 넘길 때의 제약까지 정리한다."
+category: "Development"
+tags: ["Next.js", "React", "RSC", "App Router", "Frontend"]
+---
+
+경계 설정의 핵심은 "이 코드가 어디서 실행되는가"를 이해하는 것이다.
+
+---
+
+## Server Component에서 쓸 수 없는 것들
+
+서버 컴포넌트는 서버에서 단 한 번 실행되고 끝난다. 상태를 가지지 않으며, 렌더링 후 DOM이 마운트되는 개념이 없다.
+
+**React 훅**
+
+`useState`, `useReducer`, `useEffect`, `useLayoutEffect`는 쓸 수 없다. 상태와 생명주기 개념 자체가 없기 때문이다.
+
+**브라우저 전용 API**
+
+`window`, `document`, `localStorage`, `navigator`는 서버에 존재하지 않는다. 접근하면 에러가 발생한다.
+
+**이벤트 핸들러**
+
+`onClick`, `onChange`, `onSubmit` 등 사용자 액션을 감지하는 핸들러를 붙일 수 없다. 서버에서 렌더링이 끝난 시점엔 사용자가 없다.
+
+**상태를 사용하는 Custom Hook**
+
+내부적으로 `useState` 등을 쓰는 커스텀 훅도 호출할 수 없다. 훅 자체가 클라이언트 실행 환경을 전제로 하기 때문이다.
+
+---
+
+## Client Component에서 주의해야 할 것들
+
+클라이언트 컴포넌트는 코드 전체가 브라우저로 내려간다. 에러가 나는 경우와 권장하지 않는 경우 두 가지가 있다.
+
+**민감한 정보 (보안)**
+
+데이터베이스 비밀번호, API Secret Key 등 백엔드 환경 변수가 들어가면 안 된다. 소스 코드가 브라우저에 그대로 노출된다.
+
+**직접적인 서버 리소스 접근**
+
+DB 쿼리나 Node.js의 `fs` 모듈 같은 서버 전용 모듈은 브라우저에서 실행될 수 없어 에러가 발생한다.
+
+**무거운 라이브러리**
+
+에러는 아니지만, 마크다운 파서나 복잡한 포맷팅 라이브러리를 클라이언트 컴포넌트에 넣으면 번들 크기가 커져 초기 로딩이 느려진다. 서버 컴포넌트에서 처리하고 결과값만 넘기는 게 낫다.
+
+---
+
+## Props 전달 시 제약 사항
+
+서버 컴포넌트에서 클라이언트 컴포넌트로 Props를 넘길 때 가장 많이 실수하는 부분이다.
+
+서버에서 클라이언트로 넘어가는 데이터는 네트워크를 거치며 JSON으로 직렬화(Serialization)된다. 직렬화가 안 되는 값은 넘길 수 없다.
+
+**함수 전달 불가**
+
+```tsx
+// 불가능
+function Page() {
+  const handleClick = () => console.log("clicked");
+  return <Button onClick={handleClick} />; // 에러
+}
+```
+
+이벤트 핸들러나 콜백 함수는 직렬화가 안 된다. 단, Server Actions는 예외다.
+
+```tsx
+// Server Actions는 가능
+async function handleSubmit() {
+  "use server";
+  // 서버에서 실행되는 액션
+}
+
+return <Form action={handleSubmit} />;
+```
+
+**클래스 인스턴스 전달 불가**
+
+`Date` 객체나 커스텀 클래스 인스턴스도 직렬화가 안 된다.
+
+```tsx
+// 불가능
+const date = new Date();
+return <Component date={date} />; // 에러
+
+// 가능 — 문자열로 변환
+return <Component date={date.toISOString()} />;
+```
+
+순수 데이터(문자열, 숫자, 일반 객체, 배열)만 넘길 수 있다. 클래스 인스턴스는 반드시 변환해서 넘겨야 한다.
