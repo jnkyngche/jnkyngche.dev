@@ -7,6 +7,7 @@ description: "GitHub Actions에서 SSH 방식을 AWS SSM으로 전환해 PEM 키
 기존 배포 파이프라인에서 GitHub Actions Runner가 EC2에 SSH로 접속해 Docker를 실행하는 단계가 있었다. `appleboy/ssh-action`을 사용하기 위해 GitHub Secrets에 **PEM(Private Key)**을 직접 등록해 사용했다.
 
 **문제:**
+
 - GitHub 계정이 탈취되면 서버의 개인키도 함께 노출된다.
 - 외부 서비스(GitHub)에 PEM 키 원본을 저장하는 구조 자체가 보안 취약점이다.
 
@@ -14,7 +15,7 @@ description: "GitHub Actions에서 SSH 방식을 AWS SSM으로 전환해 PEM 키
 
 ---
 
-## 1단계: EC2에 SSM 권한 부여 (IAM 역할 생성)
+## 1단계 EC2에 SSM 권한 부여
 
 EC2가 SSM 서비스와 통신할 수 있도록 IAM 역할을 부여한다.
 
@@ -26,7 +27,7 @@ EC2가 SSM 서비스와 통신할 수 있도록 IAM 역할을 부여한다.
 
 > 기존에 ECR 접근 등을 위해 만들어둔 역할이 있다면, 해당 역할에 `AmazonSSMManagedInstanceCore` 정책만 추가해도 된다.
 
-## 2단계: GitHub Actions IAM 사용자에 권한 추가
+## 2단계 GitHub Actions IAM 사용자에 권한 추가
 
 `aws-actions/configure-aws-credentials`에서 사용하는 IAM 사용자에게 SSM 명령 실행 권한을 추가한다.
 
@@ -34,7 +35,7 @@ EC2가 SSM 서비스와 통신할 수 있도록 IAM 역할을 부여한다.
 2. **권한 탭** > **권한 추가** > **정책 연결(Attach policies)** 클릭.
 3. `AmazonSSMFullAccess` 검색 후 연결.
 
-## 3단계: EC2에 역할 적용
+## 3단계 EC2에 역할 적용
 
 1. **EC2 콘솔** > 인스턴스 선택.
 2. **작업(Actions)** > **보안(Security)** > **IAM 역할 수정(Modify IAM role)**.
@@ -42,11 +43,11 @@ EC2가 SSM 서비스와 통신할 수 있도록 IAM 역할을 부여한다.
 
 ---
 
-## 4단계: GitHub Actions 워크플로우 수정
+## 4단계 GitHub Actions 워크플로우 수정
 
 `deploy.yml`에서 SSH 관련 부분을 SSM 명령으로 교체한다.
 
-### Before: SSH 사용 (appleboy/ssh-action)
+### 기존 방식 SSH
 
 ```yaml
 - name: Deploy to EC2
@@ -57,15 +58,15 @@ EC2가 SSM 서비스와 통신할 수 있도록 IAM 역할을 부여한다.
     IMAGE_TAG: ${{ env.IMAGE_TAG }}
     AWS_REGION: ${{ secrets.AWS_REGION }}
   with:
-    host: ${{ secrets.EC2_HOST }}     # 퍼블릭 주소
+    host: ${{ secrets.EC2_HOST }} # 퍼블릭 주소
     username: ${{ secrets.EC2_USER }} # 우분투
-    key: ${{ secrets.EC2_SSH_KEY }}   # pem
+    key: ${{ secrets.EC2_SSH_KEY }} # pem
     port: 22
     script: |
       # 도커 실행 스크립트...
 ```
 
-### After: AWS SSM 사용 (aws ssm send-command)
+### 변경 후 AWS SSM
 
 ```yaml
 - name: Deploy to EC2 via SSM
@@ -87,7 +88,5 @@ EC2가 SSM 서비스와 통신할 수 있도록 IAM 역할을 부여한다.
 `AWS-RunShellScript` 문서를 사용하면 기존 배포 스크립트를 리스트 형태로 그대로 넣을 수 있다.
 
 ---
-
-## 마무리
 
 GitHub Secrets에서 관리하던 `EC2_HOST`, `EC2_USER`, `EC2_SSH_KEY`를 모두 제거하고 **`EC2_INSTANCE_ID`** 하나만 남긴다.

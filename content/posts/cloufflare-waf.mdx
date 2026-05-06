@@ -25,7 +25,7 @@ GhostGains 프로젝트의 백엔드 API(`api.ghostgains.app`)는 서비스 구�
 
 ---
 
-## 1. Next.js API Route 구현 (Proxy)
+## Next.js API Route 구현 (Proxy)
 
 클라이언트(브라우저)에 비밀 키가 노출되지 않도록, **Server Component**나 **API Route**에서만 백엔드와 통신해야 한다.
 
@@ -55,7 +55,7 @@ export async function fetchFromAPI(endpoint: string) {
 
 ---
 
-## 2. Cloudflare WAF 설정 (Free Tier)
+## Cloudflare WAF 설정 (Free Tier)
 
 Cloudflare는 **Free Tier**에서도 강력한 WAF 기능을 제공한다. 대시보드에서 간단한 규칙(Rule) 생성만으로 적용 가능하다.
 
@@ -81,7 +81,7 @@ Cloudflare는 **Free Tier**에서도 강력한 WAF 기능을 제공한다. 대�
 
 ---
 
-## 3. 테스트 및 검증
+## 테스트 및 검증
 
 설정이 완료되면 `curl` 명령어로 테스트해본다.
 

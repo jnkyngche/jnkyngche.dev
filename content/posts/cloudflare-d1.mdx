@@ -13,43 +13,44 @@ Workers와 같은 엣지 네트워크에서 도는 SQLite라 속도도 빠르고
 
 ---
 
-## 1. Cloudflare Workers
+## Cloudflare Workers
 
 보통 서버라고 하면 AWS EC2 같은 가상 머신이나, 서울 리전에 박혀있는 람다(Lambda)를 떠올린다. 하지만 Cloudflare Workers는 개념이 좀 다르다.
 
-전 세계에 퍼져있는 **엣지 로케이션(Edge Location)** 전체가 내 서버가 된다. 사용자가 런던에서 접속하면 런던 서버가, 서울에서 접속하면 서울 서버가 응답한다. 
+전 세계에 퍼져있는 **엣지 로케이션(Edge Location)** 전체가 내 서버가 된다. 사용자가 런던에서 접속하면 런던 서버가, 서울에서 접속하면 서울 서버가 응답한다.
 
 ### 왜 Free Tier가 사기인가?
+
 사이드 프로젝트 개발자에게 가장 중요한 건 역시 비용이다.
 Cloudflare Workers의 무료 플랜은 하루에 **10만 건(Requests)** 까지 무료다. 안 쓸 이유가 없다.
 
 ---
 
-## 2. Hono
+## Hono
 
 Workers 환경은 Node.js가 아니라 V8 엔진 기반의 독자적인 런타임을 쓴다. 그래서 무거운 Express.js 대신 엣지 환경에 최적화된 프레임워크가 필요했다.
 
 그게 바로 **Hono(호노)**다.
 
-* **가볍다:** 용량이 14KB밖에 안 된다.
-* **빠르다:** 웹 표준(Web Standard) API를 기반으로 만들어져서 Cloudflare Workers와 궁합이 잘 맞는다.
-* **익숙하다:** 라우팅 문법이 Express와 거의 똑같다
+- **가볍다:** 용량이 14KB밖에 안 된다.
+- **빠르다:** 웹 표준(Web Standard) API를 기반으로 만들어져서 Cloudflare Workers와 궁합이 잘 맞는다.
+- **익숙하다:** 라우팅 문법이 Express와 거의 똑같다
 
 ```typescript
-import { Hono } from 'hono';
-import { cors } from 'hono/cors';
+import { Hono } from "hono";
+import { cors } from "hono/cors";
 
 const app = new Hono();
 
-app.use('/*', cors());
-app.get('/', (c) => c.text('👻 GhostGains API is Live'));
+app.use("/*", cors());
+app.get("/", (c) => c.text("👻 GhostGains API is Live"));
 
 export default app;
 ```
 
 ---
 
-## 3. D1: DB도 엣지에 놓기
+## D1으로 DB도 엣지에 놓기
 
 백엔드(Workers)는 전 세계에 퍼져있는데, DB가 미국에 하나만 있다면?
 결국 데이터 요청시간 때문에 엣지의 장점이 다소 사라진다.
@@ -57,6 +58,7 @@ export default app;
 **Cloudflare D1**은 **엣지 네이티브 분산형 SQLite 데이터베이스**다.
 
 ### 왜 D1인가?
+
 1.  **workers와 같은 네트워크:** D1은 Workers 내부 프로토콜(HTTP 기반)로 통신하기 때문에 연결 지연이 '0'에 가깝다.
 2.  **표준 SQL 지원:** 익숙한 `SELECT * FROM` 쿼리를 그대로 쓰면 된다.
 
@@ -69,7 +71,7 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-app.get('/assets', async (c) => {
+app.get("/assets", async (c) => {
   // ORM 없이 생 쿼리(Raw SQL)를 날려도 안전하고 빠르다
   const { results } = await c.env.DB.prepare("SELECT * FROM Assets").all();
   return c.json(results);
@@ -78,10 +80,10 @@ app.get('/assets', async (c) => {
 
 ---
 
-## 4. Cron Triggers: "서버 없이 돌아가는 스케줄러"
+## Cron Triggers로 서버리스 스케줄러 구현하기
 
 GhostGains는 매일 주식 시장이 마감되면 새로운 가격 데이터를 긁어와야(Crawling) 한다.
-예전 같았으면 EC2 하나 띄워놓고 리눅스 `crontab`을 돌리거나, AWS EventBridge를 세팅해야 했을 거다. 
+예전 같았으면 EC2 하나 띄워놓고 리눅스 `crontab`을 돌리거나, AWS EventBridge를 세팅해야 했을 거다.
 
 Cloudflare Workers는 **Cron Triggers**라는 기능을 기본으로 제공한다.
 설정 파일(`wrangler.toml`)에 시간만 적어주면 끝이다.
@@ -97,23 +99,17 @@ crons = ["0 0 * * *"] # 매일 자정에 실행
 ```typescript
 export default {
   fetch: app.fetch, // 일반 API 요청 처리
-  
+
   // 크론잡이 실행될 때 여기로 들어옴
   async scheduled(event, env, ctx) {
     console.log("주식 데이터 업데이트 시작...");
     ctx.waitUntil(runDailyUpdate(env));
-  }
+  },
 };
 ```
 
 서버를 24시간 켜놓을 필요도 없고, 스케줄링을 위해 별도의 인프라를 구축할 필요도 없다. 그냥 함수 하나 추가했을 뿐인데 매일 데이터를 최신화해준다.
 
 ---
-
-## 마무리
-
-* **비용:** 프리티어 이용으로 0원.
-* **성능:** 글로벌 엣지 배포로 로컬 수준의 응답 속도.
-* **편의성:** DB 관리, 크론잡, API 서버가 하나의 코드베이스에서 관리됨.
 
 물론 D1이 RDB처럼 복잡한 트랜잭션 처리에 완벽하진 않지만, 조회 위주의 서비스라면 차고 넘치는 성능을 보여준다.

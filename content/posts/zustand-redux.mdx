@@ -10,7 +10,7 @@ tags: ["Zustand", "Redux", "React", "useSyncExternalStore", "Architecture"]
 
 ---
 
-## 1. 상태가 존재하는 위치가 다르다
+## 상태가 존재하는 위치가 다르다
 
 두 라이브러리의 가장 큰 구조적 차이는 상태(State)가 React 트리 내부에 종속되는지 여부다.
 
@@ -21,7 +21,7 @@ tags: ["Zustand", "Redux", "React", "useSyncExternalStore", "Architecture"]
 
 ---
 
-## 2. Zustand의 구독 메커니즘: 발행-구독(Pub/Sub) 패턴
+## Zustand의 구독 메커니즘과 Pub/Sub 패턴
 
 Zustand가 Provider(Context API) 없이도 상태 변경을 컴포넌트에 알릴 수 있는 이유는 내부적으로 **발행-구독(Pub/Sub) 패턴**을 구현했기 때문이다.
 
@@ -33,7 +33,7 @@ Zustand가 Provider(Context API) 없이도 상태 변경을 컴포넌트에 알�
 
 ---
 
-## 3. 리렌더링 최적화 원리: 선택적 구독 (Selectors)
+## 선택적 구독으로 리렌더링 최적화하기
 
 Context API 기반의 관리 방식은 Provider 하위의 값이 하나라도 바뀌면 해당 Context를 구독하는 모든 컴포넌트가 불필요하게 렌더링될 위험이 있다. Zustand는 **선택자(Selector)**를 통해 이 문제를 해결한다.
 

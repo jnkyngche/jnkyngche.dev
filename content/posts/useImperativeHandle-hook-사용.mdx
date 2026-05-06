@@ -10,7 +10,7 @@ description: "React의 단방향 데이터 흐름에서 벗어나 부모가 자�
 
 ---
 
-## 1. 상태 끌어올리기의 한계
+## 상태 끌어올리기의 한계
 
 텍스트 에디터 컴포넌트(`<CustomEditor />`)가 있고, 부모 컴포넌트의 '초기화' 버튼을 눌러 에디터 내용을 비워야 한다고 가정해 보자. 부모에 `isCleared` 같은 상태를 추가하는 방식을 떠올리기 쉽다.
 
@@ -35,7 +35,7 @@ const Parent = () => {
 
 ---
 
-## 2. forwardRef를 통한 참조 전달
+## forwardRef를 통한 참조 전달
 
 React에서 함수형 컴포넌트는 기본적으로 `ref`를 Props로 받을 수 없다. 부모가 `ref`를 전달하더라도 자식 컴포넌트 내부로 연결되지 않는다. 이를 가능하게 하는 것이 **forwardRef**다.
 
@@ -47,7 +47,7 @@ const CustomEditor = forwardRef((props, ref) => {
 
 ---
 
-## 3. useImperativeHandle을 활용한 API화
+## useImperativeHandle을 활용한 API화
 
 자식 컴포넌트의 독립성을 유지하려면 DOM을 직접 노출하는 대신, 필요한 동작만 메서드 형태로 제공해야 한다. 이때 **useImperativeHandle**을 사용한다. 부모가 전달한 `ref` 객체에 자식이 직접 정의한 객체나 메서드를 바인딩하는 훅이다.
 
@@ -88,7 +88,7 @@ export default CustomEditor;
 
 ---
 
-## 4. 개선된 부모 컴포넌트
+## 개선된 부모 컴포넌트
 
 이제 부모 컴포넌트에서는 불필요한 상태(State) 없이, 자식 컴포넌트가 제공하는 메서드만 호출하면 된다. 리렌더링 문제도 자연스럽게 해결된다.
 

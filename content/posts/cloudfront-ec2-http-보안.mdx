@@ -21,18 +21,18 @@ description: "EC2의 Public IP 직접 접근을 차단하고, Security Group의 
 
 ---
 
-## 해결 방법: AWS Managed Prefix List 활용
+## AWS Managed Prefix List 활용
 
 AWS는 CloudFront의 전 세계 IP 대역을 묶어 관리하는 **Managed Prefix List**를 제공한다. IP 대역을 직접 입력하지 않아도 보안 그룹에서 이 리스트를 소스로 지정하면 된다.
 
-### 1단계: EC2 보안 그룹(Security Group) 이동
+### 1단계 EC2 보안 그룹 이동
 
 1. AWS 콘솔에서 **EC2** 서비스로 이동한다.
 2. 왼쪽 메뉴 **보안 그룹(Security Groups)** 클릭.
 3. 운영 중인 EC2 인스턴스에 적용된 보안 그룹을 선택한다.
 4. **인바운드 규칙(Inbound rules)** 탭 > **인바운드 규칙 편집(Edit inbound rules)** 클릭.
 
-### 2단계: 기존 규칙 삭제 및 Prefix List 추가
+### 2단계 기존 규칙 삭제 및 Prefix List 추가
 
 포트 80에 `0.0.0.0/0`으로 설정된 기존 규칙을 삭제한다.
 
@@ -49,14 +49,12 @@ AWS는 CloudFront의 전 세계 IP 대역을 묶어 관리하는 **Managed Prefi
 
 ---
 
-## 3단계: 적용 결과 확인
+## 3단계 적용 결과 확인
 
 1. **EC2 Public IP 직접 접속:** `http://13.x.x.x` 입력 시 무한 로딩 후 "사이트에 연결할 수 없음" 오류 발생.
 2. **CloudFront 도메인으로 접속:** 정상 작동 확인.
 
 ---
-
-## 마무리
 
 - 인바운드 규칙 소스를 `0.0.0.0/0` 대신 CloudFront Managed Prefix List(`com.amazonaws.global.cloudfront.origin-facing`)로 교체한다.
 - CloudFront를 우회한 직접 접속이 차단되어 WAF, 캐싱 등의 설정이 실질적으로 적용된다.
