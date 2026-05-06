@@ -75,10 +75,10 @@ export default function ResumePage() {
                 </a>
               </div>
               <p className="mt-4 text-slate-600 dark:text-slate-300 text-base leading-7">
-                누적된 기술 부채를 걷어내고, 시스템 구조가 팀의 속도를 저해하는
-                순간을 포착해 기민하게 움직일 수 있는 환경으로 개선해 왔습니다.
-                이러한 구조적 안정화를 바탕으로, 궁극적으로 비즈니스가 직면한
-                진짜 문제를 해결하는 개발을 지향합니다.
+                누적된 기술 부채와 시스템 구조가 팀의 속도를 저해하는 순간을
+                포착해 기민하게 움직일 수 있는 환경으로 개선해 왔습니다. 이러한
+                구조적 안정화를 바탕으로, 궁극적으로 비즈니스가 직면한 진짜
+                고객의 문제를 해결하는 개발을 지향합니다.
               </p>
             </div>
 
@@ -175,11 +175,10 @@ export default function ResumePage() {
                   </div>
                   <div className="ml-5 space-y-2 text-[14px]">
                     <p className="text-[15px] text-slate-600 dark:text-slate-300">
-                      JSP 프로젝트에서 RequireJS의 비동기 로딩 타이밍 불일치로
-                      인해 클릭 이벤트 미동작 버그가 반복됐고, 공통 UI의
-                      재사용이 불가능해 코드 중복이 심했음. JSP와 RequireJS가
-                      혼재된 구조는 신규 개발자의 온보딩 비용을 가중시켜 팀
-                      확장에 걸림돌이 됐음
+                      JSP 프로젝트에서 잘못된 RequireJS 사용으로 비동기 로딩
+                      타이밍 불일치가 발생해 이벤트 미동작 버그가 반복됐고, 공통
+                      컴포넌트도 없어 코드 중복이 심했음. 그리고 신규 개발자의
+                      온보딩 비용을 가중시켜 팀 확장에 걸림돌이 됐음
                     </p>
                     <ul className="space-y-1 ml-3 text-slate-500 dark:text-slate-400">
                       <li className="flex items-start gap-1.5">
@@ -210,10 +209,10 @@ export default function ResumePage() {
                     <p className="flex items-start gap-1.5 text-[14.5px] text-slate-800 dark:text-slate-100">
                       <span className="flex-shrink-0">→</span>
                       <span>
-                        JS 로딩 타이밍 문제가 해소됐고, 버튼·테이블 등 공통 UI를
-                        컴포넌트로 분리해 코드 중복이 줄었음. 신규 개발자가 JSP
-                        학습 없이 React 기반 코드베이스에 즉시 합류할 수 있게
-                        되어 온보딩 비용도 줄었음
+                        일부 JS 로딩 타이밍 문제가 해소됐고, 버튼·테이블 등 공통
+                        UI를 컴포넌트로 분리해 코드 중복이 줄었음. 신규 개발자가
+                        React 기반 코드베이스에 즉시 합류할 수 있게 되어 온보딩
+                        비용도 줄었음
                       </span>
                     </p>
                   </div>
@@ -248,16 +247,16 @@ export default function ResumePage() {
                         <span>
                           팝업 내 재고 수정 완료 시 invalidateQueries로
                           백그라운드 자동 갱신을 구현하되, 모달 닫기 시
-                          refetch와 데이터 변경이 경합하는 문제를 해결해
-                          데이터 정합성 보장
+                          refetch와 데이터 변경이 경합하는 문제를 해결해 데이터
+                          정합성 보장
                         </span>
                       </li>
                       <li className="flex items-start gap-1.5">
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
-                          재고 수정 요청 시 서버 응답 전에 캐시를 미리
-                          반영해 UI가 즉각 반응하도록 하고, 실패 시 이전
-                          상태로 롤백 처리
+                          재고 수정 요청 시 서버 응답 전에 캐시를 미리 반영해
+                          UI가 즉각 반응하도록 하고, 실패 시 이전 상태로 롤백
+                          처리
                         </span>
                       </li>
                     </ul>
@@ -331,8 +330,8 @@ export default function ResumePage() {
                     <p className="flex items-start gap-1.5 text-[14.5px] text-slate-800 dark:text-slate-100">
                       <span className="flex-shrink-0">→</span>
                       <span>
-                        외주 2건의 프론트엔드를 단독으로 설계·구축해 모두
-                        서비스 런칭까지 완수, 인하우스 서비스 유지보수 병행
+                        외주 2건의 프론트엔드를 단독으로 설계·구축해 모두 서비스
+                        런칭까지 완수, 인하우스 서비스 유지보수 병행
                       </span>
                     </p>
                   </div>
