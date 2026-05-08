@@ -77,8 +77,8 @@ export default function ResumePage() {
               <p className="mt-4 text-slate-600 dark:text-slate-300 text-base leading-7">
                 누적된 기술 부채와 시스템 구조가 팀의 속도를 저해하는 순간을
                 포착해 기민하게 움직일 수 있는 환경으로 개선해 왔습니다. 이러한
-                구조적 안정화를 바탕으로, 궁극적으로 비즈니스가 직면한 진짜
-                고객의 문제를 해결하는 개발을 지향합니다.
+                구조적 안정화를 바탕으로 기술 그 자체보다 회사가 해결하고자 하는
+                고객의 문제에 집중하는 개발을 지향합니다.
               </p>
             </div>
 
@@ -120,8 +120,8 @@ export default function ResumePage() {
               </div>
               <p className="mt-1 mb-4 text-[14px] text-slate-500 dark:text-slate-400 leading-relaxed">
                 쿠팡·네이버 구매 가구의 입고(창고)→배송→시공/설치→반품까지 전
-                과정을 지원하는 서비스의 운영 웹(관리자/고객/물류) 및 기사용
-                모바일 앱 개발을 담당했음
+                과정을 지원하는 서비스(Series B)의 운영 웹(관리자/고객/물류) 및
+                기사용 모바일 앱 개발을 담당했음
               </p>
 
               <ul className="space-y-4 text-base text-slate-600 dark:text-slate-300 leading-relaxed">
@@ -143,8 +143,8 @@ export default function ResumePage() {
                       <li className="flex items-start gap-1.5">
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
-                          기존 안드로이드 앱 코드를 분석·파악한 뒤 React
-                          Native로 포팅, iOS·Android 단일 코드베이스로 재구축
+                          기존 안드로이드 앱 코드를 분석한 뒤 React Native로
+                          포팅, iOS·Android 단일 코드베이스로 재구축
                         </span>
                       </li>
                       <li className="flex items-start gap-1.5">
@@ -159,8 +159,8 @@ export default function ResumePage() {
                       <span className="flex-shrink-0">→</span>
                       <span>
                         iOS 기사들의 앱 사용이 가능해졌고, CodePush를 통해 긴급
-                        수정을 스토어 심사 없이 즉시 배포할 수 있게 되어 현장
-                        대응 속도가 크게 향상됨
+                        수정을 스토어 심사 없이 즉시 배포할 수 있게 되어 빠른
+                        긴급 대응이 가능해짐
                       </span>
                     </p>
                   </div>
@@ -177,32 +177,31 @@ export default function ResumePage() {
                     <p className="text-[15px] text-slate-600 dark:text-slate-300">
                       JSP 프로젝트에서 잘못된 RequireJS 사용으로 비동기 로딩
                       타이밍 불일치가 발생해 이벤트 미동작 버그가 반복됐고, 공통
-                      컴포넌트도 없어 코드 중복이 심했음. 그리고 신규 개발자의
-                      온보딩 비용을 가중시켜 팀 확장에 걸림돌이 됐음
+                      컴포넌트도 없어 코드 중복이 심했음. 이는 신규 개발자의
+                      온보딩 비용 증가로 이어져 팀 확장을 저해함
                     </p>
                     <ul className="space-y-1 ml-3 text-slate-500 dark:text-slate-400">
                       <li className="flex items-start gap-1.5">
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
-                          Next.js 프로젝트를 별도 EC2에 구성하고, CloudFront
-                          Behavior 설정으로 path별 origin을 분리하여 신규 개발
-                          영역만 Next.js 서버로 라우팅
+                          JSP를 일괄 교체하기 어려운 상황에서, CloudFront
+                          path-based routing을 설계해 신규 개발 영역만 Next.js
+                          서버로 라우팅하여 점진적 전환 기반 마련
                         </span>
                       </li>
                       <li className="flex items-start gap-1.5">
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
-                          신규 기능은 Next.js로 개발하고, 기존 JSP 중 전환
-                          비용이 낮은 페이지는 선제적으로 Next.js로
-                          마이그레이션하는 점진적 전환 전략 채택
+                          기존 JSP 중 전환 비용이 낮은 페이지를 선제적으로
+                          Next.js로 마이그레이션하여 점진적 전환 수행
                         </span>
                       </li>
                       <li className="flex items-start gap-1.5">
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
-                          버튼·테이블·팝업 등 반복 사용되는 UI 요소를 공통
-                          컴포넌트로 분리하여 페이지 간 일관성 확보 및 중복 코드
-                          제거
+                          반복 사용되는 UI 요소(버튼, 테이블, 팝업 등)를 공통
+                          컴포넌트로 분리하여 UI 일관성을 확보하고 중복 코드를
+                          제거함
                         </span>
                       </li>
                     </ul>
@@ -229,9 +228,8 @@ export default function ResumePage() {
                     <p className="text-[15px] text-slate-600 dark:text-slate-300">
                       기존 JSP 기반의 잦은 페이지 새로고침 방식으로는 관리자가
                       요구하는 빠르고 끊김 없는 업무 흐름(팝업 내 작업, 즉각적인
-                      목록 갱신 등)을 제공하기 어려웠음. 매끄러운 UX와 실시간
-                      데이터 정합성을 확보하기 위해 Next.js와 TanStack Query를
-                      선제적으로 도입
+                      목록 갱신 등)을 제공하기 어려웠음. 매끄러운 UX와 데이터
+                      정합성을 확보하기 위해 Next.js와 TanStack Query를 도입
                     </p>
                     <ul className="space-y-1 ml-3 text-slate-500 dark:text-slate-400">
                       <li className="flex items-start gap-1.5">
@@ -246,17 +244,18 @@ export default function ResumePage() {
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
                           팝업 내 재고 수정 완료 시 invalidateQueries로
-                          백그라운드 자동 갱신을 구현하되, 모달 닫기 시
-                          refetch와 데이터 변경이 경합하는 문제를 해결해 데이터
-                          정합성 보장
+                          백그라운드 자동 갱신을 구현하되, 모달 닫기 직전
+                          cancelQueries를 호출해 진행 중인 refetch를
+                          취소함으로써 데이터 변경과의 경합을 방지하고 정합성
+                          보장
                         </span>
                       </li>
                       <li className="flex items-start gap-1.5">
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
-                          재고 수정 요청 시 서버 응답 전에 캐시를 미리 반영해
-                          UI가 즉각 반응하도록 하고, 실패 시 이전 상태로 롤백
-                          처리
+                          Optimistic Update(낙관적 업데이트)를 적용하여 서버
+                          응답 전에 캐시를 미리 반영, UI 즉각 반응 및 실패 시
+                          롤백 처리 구현
                         </span>
                       </li>
                     </ul>
@@ -298,8 +297,8 @@ export default function ResumePage() {
               </div>
               <p className="mt-1 mb-4 text-[14px] text-slate-500 dark:text-slate-400 leading-relaxed">
                 오로지(창고 공유 중개·한라건설 외주), 한국경제 홈페이지(외주),
-                나집사랩(인하우스·부동산 지도 서비스)의 프론트엔드 개발 및
-                유지보수를 담당했음
+                나집사랩(인하우스·부동산 지도 서비스, Seed 단계)의 프론트엔드
+                개발 및 유지보수를 담당했음
               </p>
 
               <ul className="space-y-4 text-base text-slate-600 dark:text-slate-300 leading-relaxed">
@@ -331,7 +330,7 @@ export default function ResumePage() {
                       <span className="flex-shrink-0">→</span>
                       <span>
                         외주 2건의 프론트엔드를 단독으로 설계·구축해 모두 서비스
-                        런칭까지 완수, 인하우스 서비스 유지보수 병행
+                        런칭까지 완수, 인하우스 서비스 유지보수를 병행함
                       </span>
                     </p>
                   </div>
@@ -396,15 +395,15 @@ export default function ResumePage() {
                   <div className="ml-5 space-y-2 text-[14px]">
                     <p className="text-[15px] text-slate-600 dark:text-slate-300">
                       <span>
-                        개인 프로젝트 특성상 관리 비용을 최소화(0원)하면서도,
-                        적당한 보안처리도 가능해야 했음
+                        개인 프로젝트 특성상 관리 비용을 최소화하면서도,
+                        기본적인 보안 요구사항을 충족해야 했음
                       </span>
                     </p>
                     <ul className="space-y-1 ml-3 text-slate-500 dark:text-slate-400">
                       <li className="flex items-start gap-1.5">
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
-                          Vercel(Next) + Cloudflare Workers + cloudflare D1
+                          Vercel(Next) + Cloudflare Workers + Cloudflare D1
                           조합으로 서버리스 인프라 구성
                         </span>
                       </li>
@@ -456,8 +455,8 @@ export default function ResumePage() {
                     <p className="flex items-start gap-1.5 text-[14.5px] text-slate-800 dark:text-slate-100">
                       <span className="flex-shrink-0">→</span>
                       <span>
-                        자동화된 데이터 파이프라인 구축, 장애 즉시 감지 체계를
-                        마련함
+                        자동화된 데이터 파이프라인을 구축하고 장애 즉시 감지
+                        체계를 마련함
                       </span>
                     </p>
                   </div>
