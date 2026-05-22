@@ -78,7 +78,7 @@ export default function ResumePage() {
                 누적된 기술 부채와 시스템 구조가 팀의 속도를 저해하는 순간을
                 포착해 기민하게 움직일 수 있는 환경으로 개선해 왔습니다. 이러한
                 구조적 안정화를 바탕으로 기술 그 자체보다 회사가 해결하고자 하는
-                고객의 문제에 집중하는 개발을 지향합니다.
+                고객의 문제에 먼저 집중하는 개발을 지향합니다.
               </p>
             </div>
 
@@ -121,7 +121,7 @@ export default function ResumePage() {
               <p className="mt-1 mb-4 text-[14px] text-slate-500 dark:text-slate-400 leading-relaxed">
                 쿠팡·네이버 구매 가구의 입고(창고)→배송→시공/설치→반품까지 전
                 과정을 지원하는 서비스(Series B)의 운영 웹(관리자/고객/물류) 및
-                기사용 모바일 앱 개발을 담당했음
+                설치/배송 기사용 모바일 앱 개발을 담당했음
               </p>
 
               <ul className="space-y-4 text-base text-slate-600 dark:text-slate-300 leading-relaxed">
@@ -137,14 +137,14 @@ export default function ResumePage() {
                       기존 안드로이드 전용 앱 운영 중, 안드로이드 개발자의 잦은
                       이탈과 수급 어려움으로 유지보수에 공백이 생겼고, iOS
                       기기를 사용하는 기사들은 앱 자체를 사용할 수 없는 문제가
-                      있었음
+                      있었음.
                     </p>
                     <ul className="space-y-1 ml-3 text-slate-500 dark:text-slate-400">
                       <li className="flex items-start gap-1.5">
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
-                          기존 안드로이드 앱 코드를 분석한 뒤 React Native로
-                          포팅, iOS·Android 단일 코드베이스로 재구축
+                          기존 안드로이드 앱(Java)을 분석한 뒤 React Native로
+                          포팅, iOS·Android을 단일 코드베이스로 재구축
                         </span>
                       </li>
                       <li className="flex items-start gap-1.5">
@@ -158,9 +158,9 @@ export default function ResumePage() {
                     <p className="flex items-start gap-1.5 text-[14.5px] text-slate-800 dark:text-slate-100">
                       <span className="flex-shrink-0">→</span>
                       <span>
-                        iOS 기사들의 앱 사용이 가능해졌고, CodePush를 통해 긴급
-                        수정을 스토어 심사 없이 즉시 배포할 수 있게 되어 빠른
-                        긴급 대응이 가능해짐
+                        iOS 기사들의 앱 사용이 가능해졌고, CodePush를 통해 수정
+                        사항을 스토어 심사 없이 즉시 배포할 수 있게 되어 긴급
+                        상황에 즉각적인 대응이 가능해짐
                       </span>
                     </p>
                   </div>
@@ -175,18 +175,19 @@ export default function ResumePage() {
                   </div>
                   <div className="ml-5 space-y-2 text-[14px]">
                     <p className="text-[15px] text-slate-600 dark:text-slate-300">
-                      JSP 프로젝트에서 잘못된 RequireJS 사용으로 비동기 로딩
-                      타이밍 불일치가 발생해 이벤트 미동작 버그가 반복됐고, 공통
-                      컴포넌트도 없어 코드 중복이 심했음. 이는 신규 개발자의
-                      온보딩 비용 증가로 이어져 팀 확장을 저해함
+                      JSP 프로젝트에서 RequireJS 사용 중 비동기 로딩 타이밍
+                      불일치가 발생해 이벤트가 동작하지 않는 버그가 반복됐고,
+                      공통 컴포넌트도 없어 코드 중복이 심했음. 또한 JSP 구조에
+                      익숙하지 않은 신규 개발자는 별도 교육 없이 바로 투입하기
+                      어려워 온보딩 비용도 높았음.
                     </p>
                     <ul className="space-y-1 ml-3 text-slate-500 dark:text-slate-400">
                       <li className="flex items-start gap-1.5">
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
                           JSP를 일괄 교체하기 어려운 상황에서, CloudFront
-                          path-based routing을 설계해 신규 개발 영역만 Next.js
-                          서버로 라우팅하여 점진적 전환 기반 마련
+                          path-based routing으로 신규 영역을 Next.js 서버로
+                          분기해 점진적 전환 기반 마련
                         </span>
                       </li>
                       <li className="flex items-start gap-1.5">
@@ -208,10 +209,11 @@ export default function ResumePage() {
                     <p className="flex items-start gap-1.5 text-[14.5px] text-slate-800 dark:text-slate-100">
                       <span className="flex-shrink-0">→</span>
                       <span>
-                        일부 JS 로딩 타이밍 문제가 해소됐고, 버튼·테이블 등 공통
-                        UI를 컴포넌트로 분리해 코드 중복이 줄었음. 신규 개발자가
-                        React 기반 코드베이스에 즉시 합류할 수 있게 되어 온보딩
-                        비용도 줄었음
+                        고질적인 JS 비동기 로딩 타이밍 불일치 문제가 해소되어
+                        이벤트 오동작이 사라졌고, 공통 컴포넌트 도입으로 코드
+                        중복도 크게 줄었음. 신규 개발자가 별도 교육 없이 React
+                        기반 코드베이스에 즉시 합류할 수 있게 되어 온보딩 비용도
+                        감소함
                       </span>
                     </p>
                   </div>
@@ -226,46 +228,41 @@ export default function ResumePage() {
                   </div>
                   <div className="ml-5 space-y-2 text-[14px]">
                     <p className="text-[15px] text-slate-600 dark:text-slate-300">
-                      기존 JSP 기반의 잦은 페이지 새로고침 방식으로는 관리자가
-                      요구하는 빠르고 끊김 없는 업무 흐름(팝업 내 작업, 즉각적인
-                      목록 갱신 등)을 제공하기 어려웠음. 매끄러운 UX와 데이터
-                      정합성을 확보하기 위해 Next.js와 TanStack Query를 도입
+                      JSP 기반 구조에서는 상품 수정 시 전체 페이지를 다시
+                      렌더링해야 했기 때문에 팝업 작업 이후 목록 컨텍스트가
+                      유지되지 않았고, 반복되는 새로고침으로 관리자 업무 흐름이
+                      자주 끊겼음.
                     </p>
                     <ul className="space-y-1 ml-3 text-slate-500 dark:text-slate-400">
                       <li className="flex items-start gap-1.5">
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
-                          서버에서 prefetchQuery로 초기 데이터를 로드하고
-                          클라이언트에 Hydration을 적용해 대량 상품 데이터의
-                          초기 렌더링 속도 개선
+                          React 기반 SPA 구조와 TanStack Query를 도입해 목록
+                          영역만 부분 갱신하도록 변경
                         </span>
                       </li>
                       <li className="flex items-start gap-1.5">
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
-                          팝업 내 재고 수정 완료 시 invalidateQueries로
-                          백그라운드 자동 갱신을 구현하되, 모달 닫기 직전
-                          cancelQueries를 호출해 진행 중인 refetch를
-                          취소함으로써 데이터 변경과의 경합을 방지하고 정합성
-                          보장
+                          서버에서 prefetchQuery로 초기 데이터를 미리 캐싱한 뒤
+                          hydration하여 초기 렌더 시 중복 API 요청을 줄이고 첫
+                          화면 표시 속도 개선
                         </span>
                       </li>
                       <li className="flex items-start gap-1.5">
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
-                          Optimistic Update(낙관적 업데이트)를 적용하여 서버
-                          응답 전에 캐시를 미리 반영, UI 즉각 반응 및 실패 시
-                          롤백 처리 구현
+                          Mutation 성공 시 invalidateQueries로 목록을 자동
+                          재조회해 수동 새로고침 없이 최신 상태 유지
                         </span>
                       </li>
                     </ul>
                     <p className="flex items-start gap-1.5 text-[14.5px] text-slate-800 dark:text-slate-100">
                       <span className="flex-shrink-0">→</span>
                       <span>
-                        페이지 새로고침 없이 팝업 내 작업부터 목록 자동 갱신까지
-                        끊김 없이 처리되는 관리자 UX를 실현했고, 초기 데이터
-                        로딩 속도를 개선해 대량 상품 목록도 빠르게 표시할 수
-                        있게 됨
+                        상품 수정 후 목록을 다시 불러오거나 페이지를 새로고침할
+                        필요 없이 결과가 즉시 반영되어 관리자의 피로감이 줄고
+                        업무 흐름이 끊기지 않게 됨
                       </span>
                     </p>
                   </div>
@@ -275,7 +272,7 @@ export default function ResumePage() {
                   <div className="flex items-start gap-1.5">
                     <span className="mt-[0.65rem] h-1 w-1 rounded-full bg-slate-400 dark:bg-slate-500 flex-shrink-0" />
                     <span className="font-medium text-slate-800 dark:text-slate-100">
-                      고객사 버그 문의 실시간 대응 및 레거시 유지보수
+                      고객사 버그 문의 실시간 대응
                     </span>
                   </div>
                 </li>
@@ -326,13 +323,6 @@ export default function ResumePage() {
                         </span>
                       </li>
                     </ul>
-                    <p className="flex items-start gap-1.5 text-[14.5px] text-slate-800 dark:text-slate-100">
-                      <span className="flex-shrink-0">→</span>
-                      <span>
-                        외주 2건의 프론트엔드를 단독으로 설계·구축해 모두 서비스
-                        런칭까지 완수, 인하우스 서비스 유지보수를 병행함
-                      </span>
-                    </p>
                   </div>
                 </li>
               </ul>
@@ -378,88 +368,30 @@ export default function ResumePage() {
                 </div>
               </div>
 
-              <p className="mt-1 mb-4 text-[14px] text-slate-500 dark:text-slate-400 leading-relaxed">
-                과거 자산 데이터(비트코인, 주식 등)를 기반으로 수익률을
-                시뮬레이션하고, 이를 영수증 형태로 시각화한 웹 서비스
+              <p className="mt-1 mb-3 text-[14px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                과거 자산 데이터를 기반으로 수익률을 시뮬레이션하고 영수증
+                형태로 시각화한 웹 서비스
               </p>
 
-              <ul className="space-y-4 text-base text-slate-600 dark:text-slate-300 leading-relaxed">
-                {/* 인프라 및 API 보안 */}
-                <li className="space-y-2">
-                  <div className="flex items-start gap-1.5">
-                    <span className="mt-[0.65rem] h-1 w-1 rounded-full bg-slate-400 dark:bg-slate-500 flex-shrink-0" />
-                    <span className="font-medium text-slate-800 dark:text-slate-100">
-                      서버리스 인프라 구성 및 API 키 보안
-                    </span>
-                  </div>
-                  <div className="ml-5 space-y-2 text-[14px]">
-                    <p className="text-[15px] text-slate-600 dark:text-slate-300">
-                      <span>
-                        개인 프로젝트 특성상 관리 비용을 최소화하면서도,
-                        기본적인 보안 요구사항을 충족해야 했음
-                      </span>
-                    </p>
-                    <ul className="space-y-1 ml-3 text-slate-500 dark:text-slate-400">
-                      <li className="flex items-start gap-1.5">
-                        <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
-                        <span>
-                          Vercel(Next) + Cloudflare Workers + Cloudflare D1
-                          조합으로 서버리스 인프라 구성
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
-                        <span>
-                          Cloudflare WAF Custom Rules로 x-auth-key 헤더 없는
-                          요청을 엣지 단계에서 즉시 차단
-                        </span>
-                      </li>
-                    </ul>
-                    <p className="flex items-start gap-1.5 text-[14.5px] text-slate-800 dark:text-slate-100">
-                      <span className="flex-shrink-0">→</span>
-                      <span>낮은 유지비로 안정적 운영이 가능함</span>
-                    </p>
-                  </div>
+              <ul className="space-y-1 ml-3 text-[14px] text-slate-500 dark:text-slate-400">
+                <li className="flex items-start gap-1.5">
+                  <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
+                  <span>
+                    Vercel + Cloudflare Workers/D1 기반 서버리스 아키텍처 구성
+                  </span>
                 </li>
-
-                {/* 자동화 데이터 수집 및 모니터링 */}
-                <li className="space-y-2">
-                  <div className="flex items-start gap-1.5">
-                    <span className="mt-[0.65rem] h-1 w-1 rounded-full bg-slate-400 dark:bg-slate-500 flex-shrink-0" />
-                    <span className="font-medium text-slate-800 dark:text-slate-100">
-                      자동화 데이터 수집 파이프라인 및 모니터링
-                    </span>
-                  </div>
-                  <div className="ml-5 space-y-2 text-[14px]">
-                    <p className="text-[15px] text-slate-600 dark:text-slate-300">
-                      <span>
-                        주식, 코인 가격 데이터를 매일 최신 상태로 유지해야 했고,
-                        수집 실패 시 빠르게 감지할 수단이 필요했음
-                      </span>
-                    </p>
-                    <ul className="space-y-1 ml-3 text-slate-500 dark:text-slate-400">
-                      <li className="flex items-start gap-1.5">
-                        <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
-                        <span>
-                          Cloudflare Workers Cron Triggers로 매일 UTC 00:00
-                          Yahoo Finance·환율 API 자동 수집
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
-                        <span>
-                          Slack Webhook 연동으로 데이터 갱신 성공/실패 즉시 알림
-                        </span>
-                      </li>
-                    </ul>
-                    <p className="flex items-start gap-1.5 text-[14.5px] text-slate-800 dark:text-slate-100">
-                      <span className="flex-shrink-0">→</span>
-                      <span>
-                        자동화된 데이터 파이프라인을 구축하고 장애 즉시 감지
-                        체계를 마련함
-                      </span>
-                    </p>
-                  </div>
+                <li className="flex items-start gap-1.5">
+                  <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
+                  <span>
+                    Cloudflare WAF Custom Rules 및 인증 헤더 검증으로 API 보호
+                  </span>
+                </li>
+                <li className="flex items-start gap-1.5">
+                  <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
+                  <span>
+                    Cron Trigger + Slack Webhook 기반 데이터 수집 및 장애
+                    모니터링 자동화
+                  </span>
                 </li>
               </ul>
             </div>
