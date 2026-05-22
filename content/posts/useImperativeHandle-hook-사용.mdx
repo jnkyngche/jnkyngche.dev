@@ -1,7 +1,7 @@
 ---
 title: "react useImperativeHandle hook으로 부모 상태제어"
 date: "2024-12-11"
-description: "React의 단방향 데이터 흐름에서 벗어나 부모가 자식의 로직을 제어해야 하는 상황. 억지로 상태를 끌어올리지 않는 설계법을 공유합니다."
+description: "React의 단방향 흐름에서 부모가 자식 로직을 직접 제어해야 할 때. 상태를 억지로 끌어올리지 않는 방법을 정리한다."
 ---
 
 복잡한 폼(Form), 서드파티 라이브러리(차트, 에디터 등) 연동, 혹은 레거시 코드와 결합할 때 이 원칙만으로는 해결하기 까다로운 예외 상황이 발생한다. 대표적으로 부모 컴포넌트에서 특정 이벤트가 발생했을 때, **자식 컴포넌트 내부의 함수를 실행하거나 DOM에 포커스를 줘야 하는 경우**다.
@@ -49,7 +49,7 @@ const CustomEditor = forwardRef((props, ref) => {
 
 ## useImperativeHandle을 활용한 API화
 
-자식 컴포넌트의 독립성을 유지하려면 DOM을 직접 노출하는 대신, 필요한 동작만 메서드 형태로 제공해야 한다. 이때 **useImperativeHandle**을 사용한다. 부모가 전달한 `ref` 객체에 자식이 직접 정의한 객체나 메서드를 바인딩하는 훅이다.
+DOM을 직접 노출하는 대신, 필요한 동작만 메서드로 제공하면 자식의 캡슐화를 유지할 수 있다. **useImperativeHandle**은 부모의 `ref.current`에 바인딩할 객체를 자식에서 직접 정의하는 훅이다.
 
 ```tsx
 import { forwardRef, useImperativeHandle, useRef } from "react";

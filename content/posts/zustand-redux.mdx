@@ -6,7 +6,7 @@ category: "State Management"
 tags: ["Zustand", "Redux", "React", "useSyncExternalStore", "Architecture"]
 ---
 
-최근 전역 상태 관리 도구로 Redux 대신 Zustand를 도입하는 사례가 늘고 있다. 둘은 내부 동작 원리를 들여다보면 두 라이브러리는 **상태를 쥐고 있는 위치와 컴포넌트를 구독하는 아키텍처** 자체가 다르다. 리랜더링 관리가 쉬워서 쓰긴하는데 차이를 정리한다.
+Redux 대신 Zustand를 쓰는 프로젝트가 늘었다. 리렌더링 관리가 편해서 쓰긴 하는데, 둘은 **상태를 쥐고 있는 위치와 컴포넌트를 구독하는 아키텍처** 자체가 다르다.
 
 ---
 
@@ -17,25 +17,23 @@ tags: ["Zustand", "Redux", "React", "useSyncExternalStore", "Architecture"]
 - **Redux:** 기본적으로 단방향 데이터 흐름(Flux) 아키텍처를 따른다. 중요한 점은 React 컴포넌트에서 Redux 스토어에 접근하려면 최상단에 `<Provider store={store}>`를 씌워야 한다는 것이다. 이는 React의 Context API를 기반으로 상태를 주입하기 때문이다.
 - **Zustand:** 스토어를 생성할 때 Provider가 필요 없다. Zustand의 상태는 React 컴포넌트 트리 내부가 아니라, **React 바깥의 메모리(클로저, Closure)에 독립적으로 존재**한다.
 
-이러한 구조적 차이는 Next.js의 App Router 환경에서 큰 이점으로 작용한다.
-
 ---
 
 ## Zustand의 구독 메커니즘과 Pub/Sub 패턴
 
-Zustand가 Provider(Context API) 없이도 상태 변경을 컴포넌트에 알릴 수 있는 이유는 내부적으로 **발행-구독(Pub/Sub) 패턴**을 구현했기 때문이다.
+Zustand가 Provider 없이도 상태 변경을 컴포넌트에 알릴 수 있는 건 내부적으로 **발행-구독(Pub/Sub) 패턴**을 구현했기 때문이다.
 
 1. **스토어 생성:** `create` 함수를 호출하면 클로저 공간에 `state` 객체와 이 상태를 구독하는 컴포넌트들을 모아둘 `listeners` (Set 혹은 배열)가 생성된다.
 2. **구독 (Subscribe):** 컴포넌트에서 `useStore` 훅을 호출하면, 해당 컴포넌트를 강제로 리렌더링 시킬 수 있는 함수(React의 `forceUpdate` 역할)가 `listeners`에 등록된다.
 3. **상태 변경 (Publish):** `set` 함수를 통해 스토어의 상태가 업데이트되면, Zustand는 `listeners`를 순회하며 등록된 모든 렌더링 함수를 실행하여 컴포넌트 화면을 갱신한다.
 
-즉, React의 상태 관리 생명주기에 기대지 않고 자바스크립트의 기본 동작 원리를 활용해 컴포넌트 리렌더링을 직접 트리거하는 방식이다.
+React 상태 생명주기와 무관하게, 클로저와 Pub/Sub만으로 리렌더링을 직접 트리거한다.
 
 ---
 
 ## 선택적 구독으로 리렌더링 최적화하기
 
-Context API 기반의 관리 방식은 Provider 하위의 값이 하나라도 바뀌면 해당 Context를 구독하는 모든 컴포넌트가 불필요하게 렌더링될 위험이 있다. Zustand는 **선택자(Selector)**를 통해 이 문제를 해결한다.
+Context API는 Provider 하위 값이 하나라도 바뀌면 해당 Context를 구독하는 컴포넌트 전체가 리렌더링된다. Zustand는 **선택자(Selector)**로 이 문제를 피한다.
 
 ```tsx
 import { create } from "zustand";
