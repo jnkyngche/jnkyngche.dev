@@ -10,17 +10,26 @@
     size: A4;
     margin: 15mm;
 
+    /* 브라우저 기본 헤더/푸터를 덮어쓰고, 2장부터 표시할 내용 정의 */
+    @top-left { content: ""; }
+    @top-center { content: ""; }
     @top-right {
       content: "최준경 | 이력서";
       font-size: 9pt;
       color: #94a3b8;
     }
-
+    @bottom-left { content: ""; }
     @bottom-center {
       content: counter(page) " / " counter(pages);
       font-size: 9pt;
       color: #94a3b8;
     }
+    @bottom-right { content: ""; }
+  }
+
+  /* 첫 장에서만 상단 이름 제거 (카운터는 유지) */
+  @page :first {
+    @top-right { content: ""; }
   }
 
   html {
