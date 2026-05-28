@@ -26,14 +26,20 @@ export function ResumePrintWrapper({ children }: { children: React.ReactNode }) 
     // 다크모드 제거 후 브라우저가 리렌더링할 시간을 확보한 뒤 인쇄
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
+        // 인쇄 시 Chrome 기본 헤더에 제목이 나오지 않도록 임시 제거
+        const originalTitle = document.title;
+        document.title = "";
+
         window.print();
-        if (isDark) {
-          window.addEventListener(
-            "afterprint",
-            () => html.classList.add("dark"),
-            { once: true }
-          );
-        }
+
+        window.addEventListener(
+          "afterprint",
+          () => {
+            document.title = originalTitle;
+            if (isDark) html.classList.add("dark");
+          },
+          { once: true }
+        );
       });
     });
   }, []);

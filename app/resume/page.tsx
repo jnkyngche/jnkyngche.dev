@@ -27,9 +27,7 @@ export default function ResumePage() {
               </h1>
               <div className="flex items-center gap-4 flex-wrap">
                 <a
-                  href="https://jnkyngche.dev"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="tel:01024601861"
                   className="inline-flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
                 >
                   <svg
@@ -44,10 +42,10 @@ export default function ResumePage() {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"
+                      d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
                     />
                   </svg>
-                  jnkyngche.dev
+                  010-2460-1861
                 </a>
                 <span className="text-slate-300 dark:text-slate-600 select-none">
                   |
@@ -72,6 +70,32 @@ export default function ResumePage() {
                     />
                   </svg>
                   jnkyngche@gmail.com
+                </a>
+                <span className="text-slate-300 dark:text-slate-600 select-none">
+                  |
+                </span>
+                <a
+                  href="https://jnkyngche.dev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-3.5 h-3.5"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"
+                    />
+                  </svg>
+                  jnkyngche.dev
                 </a>
               </div>
               <p className="mt-4 text-slate-600 dark:text-slate-300 text-base leading-7">
@@ -112,15 +136,15 @@ export default function ResumePage() {
 
               <div className="flex items-baseline justify-between gap-4">
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
-                  하우저
+                  하우저 (Serise B)
                 </h3>
                 <span className="text-[14px] text-slate-500 dark:text-slate-400 font-mono flex-shrink-0">
                   2022.06 – 2025.10
                 </span>
               </div>
               <p className="mt-1 mb-4 text-[14px] text-slate-500 dark:text-slate-400 leading-relaxed">
-                쿠팡·네이버 구매 가구의 입고(창고)→배송→시공/설치→반품까지 전
-                과정을 지원하는 서비스(Series B)의 운영 웹(관리자/고객/물류) 및
+                쿠팡·네이버에서 구매한 가구의 입고(창고)→배송→시공/설치→반품까지
+                전 과정을 지원하는 서비스의 운영 웹(관리자/고객/물류) 및
                 설치/배송 기사용 모바일 앱 개발을 담당했음
               </p>
 
@@ -286,7 +310,7 @@ export default function ResumePage() {
 
               <div className="flex items-baseline justify-between gap-4">
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
-                  셰어킴
+                  셰어킴 (Seed)
                 </h3>
                 <span className="text-[14px] text-slate-500 dark:text-slate-400 font-mono flex-shrink-0">
                   2021.01 – 2022.01
@@ -294,8 +318,8 @@ export default function ResumePage() {
               </div>
               <p className="mt-1 mb-4 text-[14px] text-slate-500 dark:text-slate-400 leading-relaxed">
                 오로지(창고 공유 중개·한라건설 외주), 한국경제 홈페이지(외주),
-                나집사랩(인하우스·부동산 지도 서비스, Seed 단계)의 프론트엔드
-                개발 및 유지보수를 담당했음
+                나집사랩(인하우스·부동산 지도 서비스)의 프론트엔드 개발 및
+                유지보수를 담당했음
               </p>
 
               <ul className="space-y-4 text-base text-slate-600 dark:text-slate-300 leading-relaxed">
