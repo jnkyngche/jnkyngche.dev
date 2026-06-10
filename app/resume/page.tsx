@@ -19,7 +19,7 @@ export default function ResumePage() {
         id="resume-content"
       >
         {/* 헤더 섹션 */}
-        <section className="pt-6 pb-10 border-b border-slate-200/70 dark:border-slate-800/70">
+        <section className="pt-6 pb-10 print:pt-3 print:pb-6 border-b border-slate-200/70 dark:border-slate-800/70">
           <div className="grid grid-cols-[1fr_auto] items-start gap-x-6">
             <div className="flex flex-col gap-2">
               <h1 className="text-4xl sm:text-[2.75rem] leading-tight font-bold tracking-tight text-slate-900 dark:text-slate-50">
@@ -98,7 +98,7 @@ export default function ResumePage() {
                   jnkyngche.dev
                 </a>
               </div>
-              <p className="mt-4 text-slate-600 dark:text-slate-300 text-base leading-7">
+              <p className="mt-4 print:mt-2 text-slate-600 dark:text-slate-300 text-base leading-7 print:leading-6">
                 누적된 기술 부채와 시스템 구조가 팀의 속도를 저해하는 순간을
                 포착해 기민하게 움직일 수 있는 환경으로 개선해 왔습니다. 이러한
                 구조적 안정화를 바탕으로 기술 그 자체보다 회사가 해결하고자 하는
@@ -123,12 +123,12 @@ export default function ResumePage() {
         </section>
 
         {/* 경력 섹션 */}
-        <section className="space-y-6">
+        <section className="space-y-6 print:space-y-4">
           <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">
             경력
           </h2>
 
-          <ol className="relative space-y-8 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-[2px] before:-translate-x-1/2 before:bg-slate-200 dark:before:bg-slate-800">
+          <ol className="relative space-y-8 print:space-y-5 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-[2px] before:-translate-x-1/2 before:bg-slate-200 dark:before:bg-slate-800">
             <li className="relative pl-6">
               <span className="absolute left-2 top-[5px] -translate-x-1/2 flex h-4 w-4 items-center justify-center">
                 <span className="h-3 w-3 rounded-full bg-slate-500 dark:bg-slate-400 border-2 border-white dark:border-slate-950" />
@@ -142,13 +142,13 @@ export default function ResumePage() {
                   2022.06 – 2025.10
                 </span>
               </div>
-              <p className="mt-1 mb-4 text-[14px] text-slate-500 dark:text-slate-400 leading-relaxed">
+              <p className="mt-1 mb-4 print:mb-2 text-[14px] text-slate-500 dark:text-slate-400 leading-relaxed">
                 쿠팡·네이버에서 구매한 가구의 입고(창고)→배송→시공/설치→반품까지
                 전 과정을 지원하는 서비스의 운영 웹(관리자/고객/물류) 및
                 설치/배송 기사용 모바일 앱 개발을 담당했음
               </p>
 
-              <ul className="space-y-4 text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+              <ul className="space-y-4 print:space-y-3 text-base text-slate-600 dark:text-slate-300 leading-relaxed">
                 <li className="space-y-2">
                   <div className="flex items-start gap-1.5">
                     <span className="mt-[0.65rem] h-1 w-1 rounded-full bg-slate-400 dark:bg-slate-500 flex-shrink-0" />
@@ -178,6 +178,13 @@ export default function ResumePage() {
                           배포할 수 있는 핫픽스 체계 마련
                         </span>
                       </li>
+                      <li className="flex items-start gap-1.5">
+                        <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
+                        <span>
+                          GitLab CI/CD 파이프라인을 구축하여 테스트(Staging)와
+                          운영(Production) 배포 환경을 격리
+                        </span>
+                      </li>
                     </ul>
                     <p className="flex items-start gap-1.5 text-[14.5px] text-slate-800 dark:text-slate-100">
                       <span className="flex-shrink-0">→</span>
@@ -199,8 +206,9 @@ export default function ResumePage() {
                   </div>
                   <div className="ml-5 space-y-2 text-[14px]">
                     <p className="text-[15px] text-slate-600 dark:text-slate-300">
-                      JSP 프로젝트에서 RequireJS 사용 중 비동기 로딩 타이밍
-                      불일치가 발생해 이벤트가 동작하지 않는 버그가 반복됐고,
+                      기존 JSP 환경에서 스크립트 간의 비동기 로딩 타이밍
+                      불일치로 인해 간헐적으로 이벤트가
+                      동작하지 않는 버그가 반복됐고,
                       공통 컴포넌트도 없어 코드 중복이 심했음. 또한 JSP 구조에
                       익숙하지 않은 신규 개발자는 별도 교육 없이 바로 투입하기
                       어려워 온보딩 비용도 높았음.
@@ -316,13 +324,13 @@ export default function ResumePage() {
                   2021.01 – 2022.01
                 </span>
               </div>
-              <p className="mt-1 mb-4 text-[14px] text-slate-500 dark:text-slate-400 leading-relaxed">
+              <p className="mt-1 mb-4 print:mb-2 text-[14px] text-slate-500 dark:text-slate-400 leading-relaxed">
                 오로지(창고 공유 중개·한라건설 외주), 한국경제 홈페이지(외주),
                 나집사랩(인하우스·부동산 지도 서비스)의 프론트엔드 개발 및
                 유지보수를 담당했음
               </p>
 
-              <ul className="space-y-4 text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+              <ul className="space-y-4 print:space-y-3 text-base text-slate-600 dark:text-slate-300 leading-relaxed">
                 <li className="space-y-2">
                   <div className="flex items-start gap-1.5">
                     <span className="mt-[0.65rem] h-1 w-1 rounded-full bg-slate-400 dark:bg-slate-500 flex-shrink-0" />
@@ -355,12 +363,12 @@ export default function ResumePage() {
         </section>
 
         {/* 프로젝트 섹션 */}
-        <section className="space-y-6">
+        <section className="space-y-6 print:space-y-4">
           <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">
             개인 프로젝트
           </h2>
 
-          <div className="space-y-10">
+          <div className="space-y-10 print:space-y-6">
             <div>
               <div className="flex items-baseline justify-between gap-4">
                 <div className="flex items-center gap-2 flex-wrap">
@@ -423,12 +431,12 @@ export default function ResumePage() {
         </section>
 
         {/* 교육 섹션 */}
-        <section className="space-y-6">
+        <section className="space-y-6 print:space-y-4">
           <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">
             학력
           </h2>
 
-          <div className="space-y-8">
+          <div className="space-y-8 print:space-y-5">
             <div>
               <div className="flex items-baseline justify-between gap-4">
                 <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50">
