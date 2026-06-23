@@ -158,10 +158,9 @@ export default function ResumePage() {
                   </div>
                   <div className="ml-5 space-y-2 text-[14px]">
                     <p className="text-[15px] text-slate-600 dark:text-slate-300">
-                      기존 안드로이드 전용 앱 운영 중, 안드로이드 개발자의 잦은
-                      이탈과 수급 어려움으로 유지보수에 공백이 생겼고, iOS
-                      기기를 사용하는 기사들은 앱 자체를 사용할 수 없는 문제가
-                      있었음.
+                      기존 안드로이드 전용 앱 운영 중 안드로이드 개발자의 잦은
+                      이탈과 수급 어려움으로 유지보수에 공백이 생겼고 iOS 기기를
+                      사용하는 기사들은 앱 자체를 사용할 수 없는 문제가 있었음.
                     </p>
                     <ul className="space-y-1 ml-3 text-slate-500 dark:text-slate-400">
                       <li className="flex items-start gap-1.5">
@@ -189,9 +188,9 @@ export default function ResumePage() {
                     <p className="flex items-start gap-1.5 text-[14.5px] text-slate-800 dark:text-slate-100">
                       <span className="flex-shrink-0">→</span>
                       <span>
-                        iOS 기사들의 앱 사용이 가능해졌고, CodePush를 통해 수정
-                        사항을 스토어 심사 없이 즉시 배포할 수 있게 되어 긴급
-                        상황에 즉각적인 대응이 가능해짐
+                        iOS·Android 동시 대응 가능한 단일 코드베이스 구조를
+                        확보하고 CodePush 기반 핫픽스 체계로 스토어 심사 없이
+                        긴급 이슈에 즉시 대응 가능한 운영 구조 마련
                       </span>
                     </p>
                   </div>
@@ -207,19 +206,18 @@ export default function ResumePage() {
                   <div className="ml-5 space-y-2 text-[14px]">
                     <p className="text-[15px] text-slate-600 dark:text-slate-300">
                       기존 JSP 환경에서 스크립트 간의 비동기 로딩 타이밍
-                      불일치로 인해 간헐적으로 이벤트가
-                      동작하지 않는 버그가 반복됐고,
-                      공통 컴포넌트도 없어 코드 중복이 심했음. 또한 JSP 구조에
-                      익숙하지 않은 신규 개발자는 별도 교육 없이 바로 투입하기
-                      어려워 온보딩 비용도 높았음.
+                      불일치로 인해 간헐적으로 이벤트가 동작하지 않는 버그가
+                      반복됐고 공통 컴포넌트도 없어 코드 중복이 심했음. 또한 JSP
+                      구조에 익숙하지 않은 신규 개발자는 별도 교육 없이 바로
+                      투입하기 어려워 온보딩 비용도 높았음.
                     </p>
                     <ul className="space-y-1 ml-3 text-slate-500 dark:text-slate-400">
                       <li className="flex items-start gap-1.5">
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
-                          JSP를 일괄 교체하기 어려운 상황에서, CloudFront
-                          path-based routing으로 신규 영역을 Next.js 서버로
-                          분기해 점진적 전환 기반 마련
+                          JSP를 일괄 교체하기 어려운 상황에서 CloudFront
+                          path-based routing을 활용해 신규 영역을 Next.js 서버로
+                          분기하는 구조를 기반으로 점진적 전환 수행
                         </span>
                       </li>
                       <li className="flex items-start gap-1.5">
@@ -242,7 +240,7 @@ export default function ResumePage() {
                       <span className="flex-shrink-0">→</span>
                       <span>
                         고질적인 JS 비동기 로딩 타이밍 불일치 문제가 해소되어
-                        이벤트 오동작이 사라졌고, 공통 컴포넌트 도입으로 코드
+                        이벤트 오동작이 사라졌고 공통 컴포넌트 도입으로 코드
                         중복도 크게 줄었음. 신규 개발자가 별도 교육 없이 React
                         기반 코드베이스에 즉시 합류할 수 있게 되어 온보딩 비용도
                         감소함
@@ -262,7 +260,7 @@ export default function ResumePage() {
                     <p className="text-[15px] text-slate-600 dark:text-slate-300">
                       JSP 기반 구조에서는 상품 수정 시 전체 페이지를 다시
                       렌더링해야 했기 때문에 팝업 작업 이후 목록 컨텍스트가
-                      유지되지 않았고, 반복되는 새로고침으로 관리자 업무 흐름이
+                      유지되지 않았고 반복되는 새로고침으로 관리자 업무 흐름이
                       자주 끊겼음.
                     </p>
                     <ul className="space-y-1 ml-3 text-slate-500 dark:text-slate-400">
@@ -344,7 +342,7 @@ export default function ResumePage() {
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
                           Next.js, TypeScript 기반 프론트엔드 아키텍처를
-                          처음부터 설계하고, Recoil로 전역 상태 구조를 정의해
+                          처음부터 설계하고 Recoil로 전역 상태 구조를 정의해
                           기능 확장에 유연한 상태 관리 체계 마련
                         </span>
                       </li>
@@ -355,79 +353,20 @@ export default function ResumePage() {
                         </span>
                       </li>
                     </ul>
+                    <p className="flex items-start gap-1.5 text-[14.5px] text-slate-800 dark:text-slate-100">
+                      <span className="flex-shrink-0">→</span>
+                      <span>
+                        초기부터 설계한 컴포넌트 구조와 상태 관리 체계로 기능
+                        추가 시 영향 범위를 최소화하고 결제·채팅 외부 모듈
+                        연동으로 핵심 서비스 기능을 안정적으로 제공하여
+                        성공적으로 런칭함
+                      </span>
+                    </p>
                   </div>
                 </li>
               </ul>
             </li>
           </ol>
-        </section>
-
-        {/* 프로젝트 섹션 */}
-        <section className="space-y-6 print:space-y-4">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">
-            개인 프로젝트
-          </h2>
-
-          <div className="space-y-10 print:space-y-6">
-            <div>
-              <div className="flex items-baseline justify-between gap-4">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50">
-                    ghostgains.app
-                  </h3>
-                  <a
-                    href="https://ghostgains.app"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors inline-flex items-center gap-1.5"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-3.5 h-3.5"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
-                      />
-                    </svg>
-                  </a>
-                </div>
-              </div>
-
-              <p className="mt-1 mb-3 text-[14px] text-slate-500 dark:text-slate-400 leading-relaxed">
-                과거 자산 데이터를 기반으로 수익률을 시뮬레이션하고 영수증
-                형태로 시각화한 웹 서비스
-              </p>
-
-              <ul className="space-y-1 ml-3 text-[14px] text-slate-500 dark:text-slate-400">
-                <li className="flex items-start gap-1.5">
-                  <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
-                  <span>
-                    Vercel + Cloudflare Workers/D1 기반 서버리스 아키텍처 구성
-                  </span>
-                </li>
-                <li className="flex items-start gap-1.5">
-                  <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
-                  <span>
-                    Cloudflare WAF Custom Rules 및 인증 헤더 검증으로 API 보호
-                  </span>
-                </li>
-                <li className="flex items-start gap-1.5">
-                  <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
-                  <span>
-                    Cron Trigger + Slack Webhook 기반 데이터 수집 및 장애
-                    모니터링 자동화
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </div>
         </section>
 
         {/* 교육 섹션 */}
