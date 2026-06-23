@@ -1,9 +1,10 @@
 ---
-title: "Cloudflare WAF 설정으로 API 보호하기"
+title: "Cloudflare WAF 설정으로 API 보호"
 date: "2025-12-24"
 description: "Cloudflare WAF Free Tier를 활용해 Next.js API Route와 백엔드 간의 통신을 무료로 보호하는 방법을 공유합니다."
 category: "DevOps"
 tags: ["Cloudflare", "WAF", "Next.js", "Security", "Serverless"]
+published: false
 ---
 
 GhostGains 프로젝트의 백엔드 API(`api.ghostgains.app`)는 서비스 구조상 퍼블릭하게 열려있었다. cloudflare workers로 서버리스 api가 d1 데이터베이스와 연결되어있는데 아무런 보호 조치 없이 열어두자니 크롤링이나 악성 트래픽이 걱정됐다. 실제로 Google Analytics로 확인해보면 각국에서 무차별적으로 요청이 들어온다.
@@ -37,13 +38,13 @@ GhostGains 프로젝트의 백엔드 API(`api.ghostgains.app`)는 서비스 구�
 export async function fetchFromAPI(endpoint: string) {
   // ⚠️ Node.js 런타임에서만 실행됨. 브라우저 network 탭엔 헤더가 안 찍힘.
   const res = await fetch(`https://api.ghostgains.app${endpoint}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       // Cloudflare WAF가 검사할 비밀 키 주입
-      'x-auth-key': process.env.API_SECRET_KEY!, 
+      "x-auth-key": process.env.API_SECRET_KEY!,
     },
-    next: { revalidate: 3600 }
+    next: { revalidate: 3600 },
   });
 
   if (!res.ok) throw new Error(`API Error: ${res.status}`);
@@ -65,17 +66,16 @@ Cloudflare는 **Free Tier**에서도 강력한 WAF 기능을 제공한다. 대�
 4.  아래와 같이 차단 규칙 설정:
 
 **Expression Preview:**
+
 ```text
 (http.request.headers["x-auth-key"] ne "YOUR_SECRET_KEY_HERE")
 ```
 
-
-
-* **Field:** `Header`
-* **Name:** `x-auth-key` (코드와 일치해야 함)
-* **Operator:** `does not equal`
-* **Value:** `설정한_비밀_키_값`
-* **Action:** `Block`
+- **Field:** `Header`
+- **Name:** `x-auth-key` (코드와 일치해야 함)
+- **Operator:** `does not equal`
+- **Value:** `설정한_비밀_키_값`
+- **Action:** `Block`
 
 설정 후 `Deploy`를 누르면 즉시 적용된다.
 
@@ -86,26 +86,27 @@ Cloudflare는 **Free Tier**에서도 강력한 WAF 기능을 제공한다. 대�
 설정이 완료되면 `curl` 명령어로 테스트해본다.
 
 **헤더 없이 요청 시 (차단 확인):**
+
 ```bash
 curl https://api.ghostgains.app/assets
 # 결과: 403 Forbidden (Cloudflare 화면 리턴)
 ```
 
 **헤더 포함 요청 시 (정상 응답):**
+
 ```bash
 curl -H "x-auth-key: 설정한_비밀_키_값" https://api.ghostgains.app/assets
 # 결과: 정상 JSON 데이터 리턴
 ```
 
-
 **브라우저에서 헤더 키 없이 접근 (차단 확인)**
+
 <Image
   src="/api.ghostgains.app_.png"
   alt="api.ghostgains.app - Cloudflare WAF 설정 화면"
   width={800}
   height={420}
-  style={{ border: '1px solid #ddd', borderRadius: 8, margin: '24px 0' }}
+  style={{ border: "1px solid #ddd", borderRadius: 8, margin: "24px 0" }}
 />
-
 
 WAF가 Edge에서 요청을 걸러내기 때문에 백엔드(Workers)는 실행조차 되지 않는다. 비용이 0원이다. 토이 프로젝트에서 API를 보호하는 가장 가성비 좋은 방법이라 생각한다.

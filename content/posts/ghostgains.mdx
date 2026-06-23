@@ -1,0 +1,49 @@
+---
+title: "ghostgains.app 회고"
+date: "2025-12-10"
+description: "과거 자산 데이터 기반 수익률 시뮬레이션 서비스를 만들면서 선택한 서버리스 아키텍처, API 보안, 모니터링 자동화 경험을 공유한다."
+category: "Project"
+tags: ["Vercel", "Cloudflare", "Serverless", "Slack", "Side Project"]
+---
+
+[ghostgains.app](https://ghostgains.app)은 과거 자산 데이터를 기반으로 수익률을 시뮬레이션하고, 결과를 영수증 형태로 시각화하는 웹 서비스다. "그때 비트코인을 샀다면 지금 얼마일까?" 같은 질문에 숫자로 답해준다. seo도 테스트해보고 검색 유입 테스트를 위해 만들어봤ㄷ다.
+
+## 아키텍처
+
+프론트엔드는 **Vercel**에 올렸다. Next.js 프로젝트라 별다른 고민 없이 선택했다.
+
+백엔드는 **Cloudflare Workers + D1** 조합을 택했다. 금융 데이터 특성상 매일 자산 가격을 갱신해야 하고, 요청마다 과거 수익률을 실시간으로 계산해야 한다. 처음엔 익숙한 AWS EC2 + RDS를 떠올렸지만, 프리티어는 6개월이면 끝난다. 그 이후부터는 고정 비용이 매달 나간다. 겸사겸사 서버리스 구조도 써보고 싶었다. Workers와 D1은 무료 티어가 충분해서 트래픽이 적은 사이드 프로젝트엔 비용이 거의 0이다.
+
+D1이 Workers 내부 프로토콜로 통신하기 때문에 DB 연결 지연도 거의 없다.
+
+## API
+
+서버리스로 worker에 올려스크레이핑이나 무단 호출이 들어온다. 누군가 스크립트로 대량 요청을 보내면 **D1 읽기 비용**과 **Workers 호출 비용**이 발생한다.
+
+**Cloudflare WAF Custom Rules**로 요청이 Workers에 닿기 전에 방화벽 레벨에서 먼저 필터링한다. 예상치 못한 트래픽 패턴이나 과도한 요청 빈도를 여기서 차단한다. 애플리케이션 코드를 건드리지 않고 Cloudflare 대시보드에서 규칙만 추가하면 되기 때문에 관리 포인트가 적고, 백엔드는 인가된 요청만 처리하게 된다.
+
+## 모니터링
+
+데이터 수집이 조용히 실패하면 사용자는 모른다. 오래된 데이터가 쌓이다가 뒤늦게 발견하는 상황이 생긴다.
+
+**Cloudflare Cron Triggers**로 매일 장 마감 후 자산 가격 데이터를 자동으로 수집한다. `wrangler.toml`에 크론 표현식만 적으면 된다. EC2를 24시간 켜두거나 별도 스케줄러를 구성할 필요가 없다.
+
+수집 로직 안에서 실패가 감지되면 **Slack Webhook**으로 알림을 보낸다. 어떤 자산의 어느 단계에서 실패했는지 메시지에 담아서, 알림을 받으면 바로 원인을 파악할 수 있다.
+
+```typescript
+async function notify(message: string, env: Bindings) {
+  await fetch(env.SLACK_WEBHOOK_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text: message }),
+  });
+}
+
+try {
+  await collectDailyPrices(env);
+} catch (e) {
+  await notify(`데이터 수집 실패: ${e}`, env);
+}
+```
+
+사이드 프로젝트라 24시간 들여다볼 수 없으니, 문제가 생기면 알아서 알려주는 구조가 필요했다.
