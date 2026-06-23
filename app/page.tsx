@@ -2,7 +2,7 @@ import { allPosts } from "contentlayer/generated";
 import Link from "next/link";
 
 export default function Home() {
-  const sortedPosts = allPosts.sort(
+  const sortedPosts = allPosts.filter((post) => post.published !== false).sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 

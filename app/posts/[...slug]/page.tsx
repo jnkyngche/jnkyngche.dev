@@ -56,15 +56,17 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams(): Promise<Array<{ slug: string[] }>> {
-  return allPosts.map((post) => ({
-    slug: post.slugAsParams.split("/"),
-  }));
+  return allPosts
+    .filter((post) => post.published !== false)
+    .map((post) => ({
+      slug: post.slugAsParams.split("/"),
+    }));
 }
 
 export default async function PostPage({ params }: PostProps) {
   const post = await getPostFromParams(params);
 
-  if (!post) {
+  if (!post || post.published === false) {
     notFound();
   }
 
