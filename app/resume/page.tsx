@@ -166,8 +166,9 @@ export default function ResumePage() {
                       <li className="flex items-start gap-1.5">
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
-                          기존 안드로이드 앱(Java)을 분석한 뒤 React Native로
-                          포팅, iOS·Android을 단일 코드베이스로 재구축
+                          기존 안드로이드 앱(Java)을 분석한 뒤 TypeScript 기반
+                          React Native로 포팅, iOS·Android 단일 코드베이스로
+                          재구축
                         </span>
                       </li>
                       <li className="flex items-start gap-1.5">
@@ -188,9 +189,9 @@ export default function ResumePage() {
                     <p className="flex items-start gap-1.5 text-[14.5px] text-slate-800 dark:text-slate-100">
                       <span className="flex-shrink-0">→</span>
                       <span>
-                        iOS·Android 동시 대응 가능한 단일 코드베이스 구조를
-                        확보하고 CodePush 기반 핫픽스 체계로 스토어 심사 없이
-                        긴급 이슈에 즉시 대응 가능한 운영 구조 마련
+                        스토어 출시 직전 단계까지 개발을 마무리하여
+                        iOS·Android 동시 대응 구조와 CodePush 기반 핫픽스
+                        체계를 갖춤
                       </span>
                     </p>
                   </div>
@@ -267,8 +268,8 @@ export default function ResumePage() {
                       <li className="flex items-start gap-1.5">
                         <span className="mt-[0.65em] h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-600 flex-shrink-0" />
                         <span>
-                          React 기반 SPA 구조와 TanStack Query를 도입해 목록
-                          영역만 부분 갱신하도록 변경
+                          TypeScript 기반 Next.js로 전환하고 TanStack Query를
+                          도입해 목록 영역만 부분 갱신하도록 변경
                         </span>
                       </li>
                       <li className="flex items-start gap-1.5">
